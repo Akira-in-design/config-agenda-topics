@@ -1,0 +1,1558 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Config 2026 · 设计师主题复盘</title>
+  <style>
+    :root {
+      --ink: #161616;
+      --paper: #f4f0e8;
+      --panel: #fffdf7;
+      --muted: #6d675f;
+      --line: #d8d1c5;
+      --soft: #eee8dc;
+      --lime: #d8ff52;
+      --green: #24cb71;
+      --blue: #bfe9ff;
+      --violet: #7559ff;
+      --pink: #ffd8eb;
+      --orange: #ff8f57;
+      --yellow: #fff1a6;
+      --shadow: 0 20px 50px rgba(33, 28, 18, .10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(216, 255, 82, .45), transparent 22rem),
+        radial-gradient(circle at 94% 16%, rgba(117, 89, 255, .18), transparent 26rem),
+        var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    a { color: inherit; }
+    button, input { font: inherit; }
+
+    .page {
+      width: min(1480px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 24px 0 72px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+      font-size: 13px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--lime);
+    }
+
+    .top-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px 16px;
+      color: var(--muted);
+    }
+
+    .top-links a { text-underline-offset: 4px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(340px, .8fr);
+      gap: 36px;
+      padding: clamp(28px, 5vw, 72px);
+      border: 2px solid var(--ink);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -110px;
+      bottom: -150px;
+      width: 430px;
+      height: 430px;
+      border: 64px solid var(--lime);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0 0 20px;
+      font-size: clamp(48px, 7.2vw, 108px);
+      line-height: .88;
+      letter-spacing: -.068em;
+    }
+
+    h1 span {
+      display: block;
+      color: var(--violet);
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0;
+      color: #49443d;
+      font-size: clamp(16px, 1.45vw, 21px);
+      line-height: 1.68;
+    }
+
+    .hero-aside {
+      position: relative;
+      z-index: 1;
+      align-self: end;
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 20px;
+      border: 1.5px solid var(--ink);
+      border-radius: 18px;
+      background: rgba(255, 253, 247, .94);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 30px;
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-top: 72px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 28px;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 66px);
+      line-height: .95;
+      letter-spacing: -.055em;
+    }
+
+    .section-intro {
+      max-width: 650px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .brief-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .brief-card {
+      min-height: 190px;
+      padding: 20px;
+      border: 1.5px solid var(--ink);
+      border-radius: 18px;
+      background: var(--panel);
+    }
+
+    .brief-card:nth-child(1) { background: var(--lime); }
+    .brief-card:nth-child(2) { background: var(--blue); }
+    .brief-card:nth-child(3) { background: var(--pink); }
+    .brief-card:nth-child(4) { background: var(--yellow); }
+
+    .brief-card b {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 20px;
+      line-height: 1.15;
+      letter-spacing: -.025em;
+    }
+
+    .brief-card p {
+      margin: 0;
+      color: #413d37;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 28px;
+      padding: 12px;
+      border: 1.5px solid var(--ink);
+      border-radius: 20px;
+      background: rgba(255, 253, 247, .94);
+      box-shadow: 0 8px 24px rgba(33, 28, 18, .09);
+      backdrop-filter: blur(14px);
+    }
+
+    .search {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: white;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(216, 255, 82, .75);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .filter-button {
+      appearance: none;
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .filter-button:hover,
+    .filter-button[aria-pressed="true"] {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: white;
+    }
+
+    .meta-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 16px 0 26px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .topic-section {
+      margin-top: 42px;
+      padding-top: 30px;
+      border-top: 1.5px solid var(--ink);
+    }
+
+    .topic-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .topic-title {
+      margin: 0;
+      font-size: clamp(28px, 3.6vw, 48px);
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+
+    .topic-summary {
+      max-width: 760px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .topic-count {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .session-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .session-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 590px;
+      padding: 22px;
+      border: 1.5px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 253, 247, .86);
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .session-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--ink);
+      box-shadow: var(--shadow);
+    }
+
+    .thumb-link {
+      display: block;
+      margin: -22px -22px 18px;
+      border-bottom: 1.5px solid var(--line);
+      background: var(--soft);
+      text-decoration: none;
+      overflow: hidden;
+    }
+
+    .thumb-link:hover img {
+      transform: scale(1.035);
+    }
+
+    .thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: linear-gradient(135deg, var(--lime), var(--blue));
+      transition: transform .24s ease;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      color: #4b453d;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .035em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .score {
+      background: var(--lime);
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .card-title {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.12;
+      letter-spacing: -.026em;
+    }
+
+    .theme-line {
+      margin: 0 0 7px;
+      color: var(--violet);
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .speaker {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .label {
+      margin: 0 0 6px;
+      color: #4f4a43;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .summary {
+      margin: 0 0 14px;
+      color: #302d28;
+      line-height: 1.58;
+      font-size: 14px;
+    }
+
+    .insights {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .insights li {
+      position: relative;
+      padding-left: 18px;
+      color: #3f3b34;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .insights li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--violet);
+      font-weight: 900;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 22px;
+    }
+
+    .watch-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 14px;
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .watch-link:hover { background: var(--violet); }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .tag {
+      padding: 5px 7px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #5f584e;
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .empty {
+      display: none;
+      padding: 48px;
+      border: 1px dashed var(--muted);
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255,255,255,.5);
+    }
+
+    .note {
+      margin-top: 30px;
+      padding: 18px 20px;
+      border-left: 5px solid var(--orange);
+      border-radius: 12px;
+      background: #fff3ec;
+      color: #4e453d;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    footer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1.5px solid var(--ink);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 1180px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-aside { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .brief-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .session-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100% - 24px, 1480px); padding-top: 14px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .top-links { justify-content: flex-start; }
+      .hero { padding: 24px; border-radius: 22px; }
+      h1 { font-size: 52px; }
+      .hero-aside, .brief-grid { grid-template-columns: 1fr; }
+      .section { margin-top: 50px; }
+      .section-head, .meta-line, .topic-head, footer { grid-template-columns: 1fr; flex-direction: column; align-items: flex-start; }
+      .toolbar { grid-template-columns: 1fr; position: static; }
+      .filters { justify-content: flex-start; }
+      .session-grid { grid-template-columns: 1fr; }
+      .session-card { min-height: auto; }
+      .card-actions { flex-direction: column; align-items: flex-start; }
+      .tags { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">C</span>
+        Config 2026 · Designer Recap
+      </div>
+      <div class="top-links">
+        <a href="https://config.figma.com/san-francisco/agenda/" target="_blank" rel="noreferrer">Official agenda ↗</a>
+        <a href="https://www.youtube.com/@Figma" target="_blank" rel="noreferrer">Figma YouTube ↗</a>
+        <a href="../config-agenda-beijing/index.html">原北京时间版 ↗</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Config <span>重点内容地图</span></h1>
+        <p class="hero-copy">
+          这版面向错过直播的设计师：把已发布官方录屏按主题重组，
+          快速看到每场的主讲人、演讲主题、内容概要、关键洞察，以及对应的 Figma 官方 YouTube 录屏。
+        </p>
+      </div>
+      <aside class="hero-aside">
+        <div class="stat">
+          <strong>40</strong>
+          <span>官方 Agenda 当前已提供录屏链接的 session</span>
+        </div>
+        <div class="stat">
+          <strong>42</strong>
+          <span>拆分后的 speaking 内容点；合并 keynote 中的多段演讲单独展示</span>
+        </div>
+        <div class="stat">
+          <strong>7</strong>
+          <span>面向设计师重新整理的主题路径</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>大会更新<br>先读这四点</h2>
+        <p class="section-intro">
+          Config 2026 的主线不是“AI 多了几个按钮”，而是设计工作方式被重新组织：
+          context、trust、systems、craft 变成 AI 时代的核心能力。
+        </p>
+      </div>
+      <div class="brief-grid">
+        <article class="brief-card">
+          <b>AI 从工具变成协作者</b>
+          <p>Figma Agent、Make、Weave、生成式插件都指向同一个变化：设计不再只是操作画布，而是把意图、上下文和规则交给系统协作。</p>
+        </article>
+        <article class="brief-card">
+          <b>设计质量更依赖系统可读性</b>
+          <p>设计系统、内容系统和文件结构开始承担“让 AI 看懂”的责任。好的系统不只是给人复用，也要能被 agent 正确调用。</p>
+        </article>
+        <article class="brief-card">
+          <b>信任是 AI 产品的界面问题</b>
+          <p>Waymo、Gemini Enterprise、Cisco 等案例都在说明：透明并不等于可信，关键是让系统意图、状态和限制被用户理解。</p>
+        </article>
+        <article class="brief-card">
+          <b>人的判断仍是差异化来源</b>
+          <p>社区、文化语境、身份、低技术与 craft 的 session 共同提醒：平均水平会被自动化，但观点、品味和关怀不会自动出现。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="sessions">
+      <div class="section-head">
+        <h2>主题式<br>Speaking Sessions</h2>
+        <p class="section-intro">
+          用搜索和主题筛选快速定位你要看的内容。每张卡片都指向对应的官方 YouTube 录屏。
+        </p>
+      </div>
+
+      <div class="toolbar" aria-label="Session filters">
+        <input class="search" id="search" type="search" placeholder="搜索标题、主讲人、公司、关键词，例如 AI / trust / design system / culture">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="meta-line">
+        <span id="count"></span>
+        <span>排序方式：主题优先；同一主题内按内容关联度排列，而不是按直播时间。</span>
+      </div>
+
+      <div id="topic-root"></div>
+      <div class="empty" id="empty">没有匹配的 session。换一个关键词或主题试试。</div>
+
+      <div class="note">
+        说明：本页只收录官方 Agenda 当前提供 YouTube 录屏链接的 speaking 内容。
+        仍显示 “Recording coming soon” 或未提供录屏链接的场次没有被纳入卡片，避免误导。
+        摘要与 key insights 基于官方 session 描述、讲者信息和录屏元数据进行中文归纳。
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        数据来源：Config 2026 San Francisco 官方 Agenda 与其记录的 Figma 官方 YouTube 录屏链接。
+        本页生成日期：2026-06-29。原始北京时间日程副本保留在 <code>config-agenda-beijing</code>。
+      </div>
+      <div>Made for design review, not calendar planning.</div>
+    </footer>
+  </main>
+
+  <script>
+    const categories = [
+      {
+        id: "ai-future",
+        label: "AI 与设计未来",
+        intro: "关注 AI 如何改变设计师角色、创作方式、产品过程和专业价值。"
+      },
+      {
+        id: "agent-workflows",
+        label: "Agent、Make 与工作流",
+        intro: "把 AI 放进真实设计流程：上下文、插件、文件结构、agent 协作和可复用工作流。"
+      },
+      {
+        id: "trust-research",
+        label: "信任、研究与决策",
+        intro: "AI 速度提高后，用户理解、研究证据和决策可信度变得更重要。"
+      },
+      {
+        id: "systems-production",
+        label: "设计系统与生产化",
+        intro: "设计系统从组件库升级为人、代码、AI 都能读取的生产基础设施。"
+      },
+      {
+        id: "craft-expression",
+        label: "Craft、动效与界面表达",
+        intro: "从 motion、shader、界面密度到数学可视化，强调设计 craft 的新工具和新标准。"
+      },
+      {
+        id: "culture-identity",
+        label: "跨文化、身份与社区",
+        intro: "围绕身份、文化表达、社区关系、照护和低技术，提醒设计不只是效率。"
+      },
+      {
+        id: "leadership-org",
+        label: "设计领导力与组织能力",
+        intro: "面向团队、企业与设计组织：如何在 AI 时代保持质量、信任和可持续协作。"
+      }
+    ];
+
+    const sessions = [
+      {
+        category: "ai-future",
+        priority: "必看",
+        title: "The rules are the art: creating with AI",
+        session: "Keynote",
+        speaker: "Holly Herndon",
+        role: "Artist, Herndon Dryhurst Studio",
+        theme: "AI 创作、数据同意与规则设计",
+        summary: "Holly Herndon 从音乐、艺术家可控语音模型 Holly+ 与数据同意工具出发，讨论 AI 创作不是单纯生成结果，而是设计规则、许可、身份和参与关系。",
+        insights: [
+          "AI 创作的核心不只是 prompt，而是 rules、rights 和 consent。",
+          "创作者需要能定义模型如何使用自己的声音、数据和风格。",
+          "设计师在 AI 时代更像系统导演：设计边界、反馈与参与方式。"
+        ],
+        tags: ["AI", "Creative AI", "Ethics"],
+        link: "https://youtu.be/thvAivrQ4TI"
+      },
+      {
+        category: "agent-workflows",
+        priority: "工作流",
+        title: "From kickoff to canvas: connecting Google Workspace and Figma",
+        session: "Process",
+        speaker: "Addison Rodomista; Chloe Fagan-Tucker",
+        role: "Google Workspace / Google",
+        theme: "把项目上下文带进设计画布",
+        summary: "展示 Google Workspace 与 Figma 之间的连接如何减少设计前期的信息散落：从 Meet 讨论、Gemini 总结到进入 Figma 进行共创。",
+        insights: [
+          "真正的效率瓶颈往往是 context handoff，而不是画图速度。",
+          "AI 的价值来自嵌入日常工作流，而不是额外打开一个工具。",
+          "好的设计协作需要把会议、文档和画布变成连续链路。"
+        ],
+        tags: ["AI", "Google", "Workflow"],
+        link: "https://youtu.be/AOcrfsZCsrU"
+      },
+      {
+        category: "culture-identity",
+        priority: "设计叙事",
+        title: "Ready for the world",
+        session: "Craft",
+        speaker: "Vicki Tan",
+        role: "Designer and Author",
+        theme: "用 Figma 把模糊想法变成可分享的故事",
+        summary: "Vicki Tan 分享自己如何从产品设计师走向作者，用 Figma 发展一本关于决策的插画书，并处理创作过程中的混乱和不确定性。",
+        insights: [
+          "设计工具可以降低跨媒介创作门槛，让非传统作品先被做出来。",
+          "个人叙事和视觉系统可以互相推动，而不是分属两个流程。",
+          "不确定性不是创作失败，而是概念逐渐成形的材料。"
+        ],
+        tags: ["Storytelling", "Illustration", "Culture"],
+        link: "https://youtu.be/hpBND4-uiWc"
+      },
+      {
+        category: "craft-expression",
+        priority: "工具更新",
+        title: "Get animated with Figma Motion",
+        session: "Figma deep dive",
+        speaker: "Daniela Muntyan; Luca Damasco; Dave Hornsby",
+        role: "Figma",
+        theme: "Figma Motion 与系统化动效",
+        summary: "Figma 团队深入介绍 Motion Timeline、组件化动效、品牌化 motion 内容，以及动效如何更自然地进入设计到开发流程。",
+        insights: [
+          "动效不是装饰，而是产品向用户表达状态、层级和节奏的语言。",
+          "Motion 需要像组件一样被系统化，才能跨产品保持一致。",
+          "把动效留在 Figma 内完成，有助于减少设计与开发之间的语义损失。"
+        ],
+        tags: ["Motion", "Figma", "Design to dev"],
+        link: "https://youtu.be/3evAfmLVZK8"
+      },
+      {
+        category: "leadership-org",
+        priority: "开场",
+        title: "Welcome and opening remarks",
+        session: "Leadership Collective",
+        speaker: "Sheila Vashee; Noah Levin",
+        role: "Figma",
+        theme: "大会开场与设计领导力语境",
+        summary: "Figma 的开场 remarks 为后续 Leadership Collective 内容定调：AI、团队协作、产品信任和设计组织能力会贯穿整场大会。",
+        insights: [
+          "Config 2026 的讨论焦点从工具功能扩展到组织如何工作。",
+          "设计领导力需要同时理解产品、文化、AI 和团队节奏。",
+          "开场适合作为快速进入大会语境的短内容。"
+        ],
+        tags: ["Leadership", "Figma"],
+        link: "https://youtu.be/BodZ123MS3E"
+      },
+      {
+        category: "leadership-org",
+        priority: "信任",
+        title: "Trust as a through line",
+        session: "Leadership Collective",
+        speaker: "Thomas Vidal; Deidre Kolarick; Katie Szeto",
+        role: "Accor / Capital One / Figma",
+        theme: "AI 时代的品牌信任与体验信任",
+        summary: "来自 hospitality、financial services 与 Figma 的领导者讨论在 AI 与个性化加速时，如何设计持续获得用户信任的体验。",
+        insights: [
+          "信任不是单个功能，而是贯穿内容、服务、品牌和交互的连续体验。",
+          "AI 个性化需要透明、负责和可解释的边界。",
+          "行业越高风险，设计越需要把信任当作核心产品指标。"
+        ],
+        tags: ["Trust", "AI", "Brand"],
+        link: "https://youtu.be/XAePK-hlkdQ"
+      },
+      {
+        category: "culture-identity",
+        priority: "包容设计",
+        title: "Beyond design systems: designing for robots and seniors",
+        session: "Process",
+        speaker: "Anna Oh",
+        role: "Head of Product and Design, Norbert Health",
+        theme: "为护理场景中的老人和机器人 AI 设计",
+        summary: "Anna Oh 分享 Norbert Health 如何为护理院中的老人、认知障碍患者和护士设计 robotic AI，并把真实环境研究放在设计系统之前。",
+        insights: [
+          "所谓边缘场景经常是真实世界里最需要被优先理解的场景。",
+          "AI 体验不能只看屏幕，还要看空间、身体、照护关系和安全感。",
+          "包容性设计需要和实际用户、护理人员一起反复验证。"
+        ],
+        tags: ["Accessibility", "AI", "Research"],
+        link: "https://youtu.be/hGQEbwm6yc8"
+      },
+      {
+        category: "leadership-org",
+        priority: "质量标准",
+        title: "Scaling taste, craft, and quality in the AI era",
+        session: "Leadership Collective",
+        speaker: "Teo Connor; Loredana Crisan",
+        role: "Airbnb / Figma",
+        theme: "AI 时代如何规模化 taste 和 craft",
+        summary: "Airbnb 设计负责人 Teo Connor 与 Figma CDO Loredana Crisan 对谈：当 0 到 1 更容易时，团队如何保持高质量判断、审美标准和产品 craft。",
+        insights: [
+          "AI 提升产出速度后，质量标准必须更明确、更可运营。",
+          "Taste 不能只依赖少数人天赋，需要通过 critique、原则和流程扩散。",
+          "设计领导者的重点从“做更多”转向“定义什么值得做”。"
+        ],
+        tags: ["AI", "Craft", "Leadership"],
+        link: "https://www.youtube.com/watch?v=UwAtDvcmxm8"
+      },
+      {
+        category: "systems-production",
+        priority: "内容系统",
+        title: "How to build content systems for AI product workflows",
+        session: "Process",
+        speaker: "Jessica Ouyang; Jolena Ma",
+        role: "Co-founders, Ditto",
+        theme: "AI 产品工作流中的内容一致性",
+        summary: "Ditto 团队讨论在 AI 加速原型、代码和 copy 生成后，团队如何建立内容系统，避免品牌语气、合规和产品文案失控。",
+        insights: [
+          "AI 让每个工具都可能生成文案，因此内容设计变成基础设施。",
+          "内容系统需要把语气、规则、组件和审核机制连接起来。",
+          "一致性不是靠最后检查，而是靠可复用、可治理的系统输入。"
+        ],
+        tags: ["Content design", "AI", "Systems"],
+        link: "https://youtu.be/Wcz4RW1_qYI"
+      },
+      {
+        category: "trust-research",
+        priority: "研究",
+        title: "From concept to confidence with Dscout AI",
+        session: "Process",
+        speaker: "Lauren Madura; Michael Winnick",
+        role: "Dscout",
+        theme: "用 AI 加速概念验证但不牺牲判断",
+        summary: "Dscout 展示 AI 如何缩短从想法到原型的时间，同时强调速度如果没有研究、taste 和验证，会更快制造昂贵错误。",
+        insights: [
+          "设计速度提升后，学习速度也必须同步提升。",
+          "AI 适合帮团队更早、更频繁地把概念暴露给用户反馈。",
+          "信心不是来自更多方案，而是来自更清楚的证据。"
+        ],
+        tags: ["Research", "AI", "Validation"],
+        link: "https://youtu.be/9pl3twjre6E"
+      },
+      {
+        category: "agent-workflows",
+        priority: "内部工具",
+        title: "Skill issue: how we built an OS for PMs at Figma",
+        session: "Process",
+        speaker: "Jinen Kamdar; Lawrence Luk",
+        role: "Figma",
+        theme: "Figma 内部 PM OS 与 AI 工作方式",
+        summary: "Figma 团队分享 PM OS 的建设：用 AI 减少 product manager 的重复协调和信息整理，让他们把时间用于更高价值的产品判断。",
+        insights: [
+          "一个公司如何使用 AI，能反映它真实的工作文化和未来方向。",
+          "AI 工具最有效的位置是移除 busywork，而不是替代核心决策。",
+          "内部工作流产品化可以成为组织能力的放大器。"
+        ],
+        tags: ["Figma", "AI", "Product"],
+        link: "https://youtu.be/2nn5J6tUzwE"
+      },
+      {
+        category: "ai-future",
+        priority: "Agent 哲学",
+        title: "Navigating the age of agentic computing",
+        session: "Leadership Collective",
+        speaker: "Hector Ouilhet Olmos; Shani Taylor",
+        role: "AWS Applied AI Solutions / Figma",
+        theme: "Agentic AI 的新交互哲学",
+        summary: "AWS 的 Hector Ouilhet 提出面向 agentic AI 的设计哲学，反对把 agent 限制在聊天框和 sparkle button 里，转向更贴近人类协作习惯的产品体验。",
+        insights: [
+          "Agent 能记忆、推理和行动，因此界面不能继续只把它当作被动工具。",
+          "关键问题是如何设计 AI 的角色、边界、意图表达和可控性。",
+          "未来的 AI UX 会更像协作关系设计，而不是命令输入设计。"
+        ],
+        tags: ["Agentic AI", "UX", "Philosophy"],
+        link: "https://youtu.be/ndceXNZZLno"
+      },
+      {
+        category: "trust-research",
+        priority: "企业 AI",
+        title: "Trust, transparency, and flow: the UX of Gemini Enterprise",
+        session: "Leadership Collective",
+        speaker: "Sheta Chatterjee; Yuhki Yamashita",
+        role: "Google Cloud AI / Figma",
+        theme: "复杂多 agent 工作流的信任设计",
+        summary: "Gemini Enterprise UX 负责人分享如何让复杂的多 agent 企业工作流变得直觉、可信、协作化，帮助用户从“管理 AI”转向“与 AI 一起推进工作”。",
+        insights: [
+          "企业 AI 的难点不是展示能力，而是让流程状态和责任边界清楚。",
+          "Transparency 要服务于 flow；过量解释也会打断用户。",
+          "多 agent 体验需要像团队协作一样被设计。"
+        ],
+        tags: ["Gemini", "AI", "Trust"],
+        link: "https://youtu.be/cHigBlg7Ktw"
+      },
+      {
+        category: "agent-workflows",
+        priority: "Figma Agent",
+        title: "Figma deep dive: designing with the Figma agent",
+        session: "Figma deep dive",
+        speaker: "Tammy Taabassum; Rodrigo Davies",
+        role: "Figma",
+        theme: "Figma Agent 如何成为画布协作者",
+        summary: "Figma 团队展示 Figma Agent 的工作方式：结合 web search、live connectors、teachable skills 和理解上下文的 generation engine，在画布上辅助探索和迭代。",
+        insights: [
+          "Agent 的质量高度依赖它能读取多少设计上下文。",
+          "技能、连接器和搜索让 agent 从一次性生成变成持续协作者。",
+          "设计师需要学会教 agent，而不只是向它提要求。"
+        ],
+        tags: ["Figma Agent", "AI", "Canvas"],
+        link: "https://youtu.be/0HqSSIPZkbI"
+      },
+      {
+        category: "agent-workflows",
+        priority: "规模化运营",
+        title: "Hacking AI for creative operations at scale",
+        session: "Process",
+        speaker: "Rory Flynn",
+        role: "Founder, Systematiq Ai",
+        theme: "从素材生成走向创意运营系统",
+        summary: "Rory Flynn 认为创意团队使用 AI 的真正机会不只是更快产出资产，而是把 AI 放进创意生产上游的系统、规则和决策逻辑。",
+        insights: [
+          "AI 的高杠杆点在 creative ops，而不只是最后的 asset creation。",
+          "规模化创意需要设计工作流、审批逻辑和知识结构。",
+          "未来创意团队的核心能力会包含流程工程。"
+        ],
+        tags: ["Creative ops", "AI", "Scale"],
+        link: "https://youtu.be/_az4W2z5Fqw"
+      },
+      {
+        category: "agent-workflows",
+        priority: "插件",
+        title: "Generative plugins: building plugins has never been easier",
+        session: "Figma deep dive",
+        speaker: "Georgia Rust; Avery Frankenberg; Jason Calleiro",
+        role: "Figma",
+        theme: "用 agent 生成原生感插件",
+        summary: "Figma 团队展示如何用自然语言描述输入、规则和输出，让 agent 把重复工作流转化为 Figma 插件，连接设计系统与组织流程。",
+        insights: [
+          "插件正在从开发项目变成可被描述和生成的工作流包装。",
+          "团队可以把自己的规则和标准产品化，而不是靠人工记忆。",
+          "设计师和工程师之间会出现更多半自动化的 workflow artifact。"
+        ],
+        tags: ["Plugins", "AI", "Dev and code"],
+        link: "https://www.youtube.com/watch?v=5g7c4-EtmS8"
+      },
+      {
+        category: "culture-identity",
+        priority: "社区",
+        title: "The most important component: community",
+        session: "Process",
+        speaker: "Alicia Kranjc",
+        role: "Figma Community Product Manager",
+        theme: "AI 创作时代的社区与原创性",
+        summary: "这场演讲回应 AI 进入创作流程后最常见的问题：什么让作品仍然属于“我们”？答案不是更快的生成，而是真实的人际连接和共享视角。",
+        insights: [
+          "社区是创意工作的上下文，也是差异化来源。",
+          "当平均产出被自动化，关系、观点和共同语言更重要。",
+          "设计平台需要支持 provenance、分享和创意 kinship。"
+        ],
+        tags: ["Community", "AI", "Creativity"],
+        link: "https://youtu.be/U4bSieNNFU8"
+      },
+      {
+        category: "ai-future",
+        priority: "OpenAI",
+        title: "Designing OpenAI’s products: Rethinking design in the age of AI",
+        session: "Leadership Collective",
+        speaker: "Ian Silber; Noah Levin",
+        role: "OpenAI / Figma",
+        theme: "为大规模 AI 产品设计",
+        summary: "OpenAI 产品设计负责人分享在技术、用例和商业模型持续变化时，如何为数亿用户设计 AI 产品，并处理新能力带来的体验不确定性。",
+        insights: [
+          "AI 产品的设计对象会持续变化，设计过程也必须适应不确定性。",
+          "大规模 AI 产品需要同时平衡易用性、能力表达和安全边界。",
+          "设计师的任务是把快速变化的技术转译成可理解的日常体验。"
+        ],
+        tags: ["OpenAI", "AI products", "Scale"],
+        link: "https://youtu.be/eOd2gQg5vjg"
+      },
+      {
+        category: "ai-future",
+        priority: "思维方式",
+        title: "How structured thinking gives your AI superpowers",
+        session: "Process",
+        speaker: "Carola Pescio Canale",
+        role: "Head of Design, AI, Atlassian",
+        theme: "结构化设计过程如何放大 AI",
+        summary: "Atlassian 的 AI 设计负责人讨论：最好的设计师不会只用 AI 生成东西，而会通过 docs、issues、trackers 和 briefs 让 AI 放大自己的思考。",
+        insights: [
+          "AI 输出质量取决于前置信息结构，而不只是 prompt 文采。",
+          "把设计推理外显到文档和任务系统中，可以让 AI 成为持续伙伴。",
+          "结构化思维会成为 AI 时代设计师的基本功。"
+        ],
+        tags: ["AI", "Structured thinking", "Atlassian"],
+        link: "https://youtu.be/CPkL9msCuIU"
+      },
+      {
+        category: "craft-expression",
+        priority: "视觉表达",
+        title: "Shaders in Figma: create the effects and fills you've always wanted",
+        session: "Figma deep dive",
+        speaker: "Yassir Solomah; Piers Cowburn; Rogie King",
+        role: "Figma",
+        theme: "Shader fills、effects 与设计 agent",
+        summary: "Figma 团队介绍 shader fills 和 effects 如何让设计师创建动态、可编辑的视觉表面，并通过 design agent 缩短想象和实现之间的距离。",
+        insights: [
+          "高级视觉效果正在从工程特权变成设计工具内的表达材料。",
+          "Agent 可以帮助设计师跨过代码门槛，但最终审美判断仍在人。",
+          "可编辑、可复用的动态表面会扩展品牌视觉系统的边界。"
+        ],
+        tags: ["Shaders", "Visual design", "Figma"],
+        link: "https://youtu.be/y_2_w-r9TYY"
+      },
+      {
+        category: "trust-research",
+        priority: "研究未来",
+        title: "Build like it's 2030. Listen like you mean it.",
+        session: "Process",
+        speaker: "Ned Dwyer",
+        role: "CEO & Co-founder, Great Question",
+        theme: "设计速度提升后如何认真倾听用户",
+        summary: "这场演讲讨论 AI 和工具民主化如何扩大设计职责：设计师不会因为生成更快而变小，反而需要更战略地定义质量、倾听用户和连接研究。",
+        insights: [
+          "研究被民主化后，研究者没有消失；设计被民主化后，设计师也不会消失。",
+          "团队需要定义“好”的标准，而不是只追求更快产出。",
+          "倾听用户必须进入构建节奏，而不是作为上线后的补救。"
+        ],
+        tags: ["Research", "AI", "Strategy"],
+        link: "https://www.youtube.com/watch?v=ahDcjUgyI78"
+      },
+      {
+        category: "craft-expression",
+        priority: "动效",
+        title: "The learning curve: turning real-world motion into design",
+        session: "Closing keynote",
+        speaker: "Patrick Flaherty",
+        role: "Senior Motion Designer, Microsoft",
+        theme: "把真实动作转成可编辑动效曲线",
+        summary: "Patrick Flaherty 展示 capture-to-curve 工作流：把真实手势和动作捕捉为可编辑 timing，减少在 graph editor 中手工调曲线的摩擦。",
+        insights: [
+          "真实世界的动作可以成为数字动效的高质量输入。",
+          "好的 motion workflow 应该让设计师更关注节奏和感受，而不是工具摩擦。",
+          "动效也可以像其他设计资产一样被捕捉、清理和复用。"
+        ],
+        tags: ["Motion", "Microsoft", "Workflow"],
+        link: "https://youtu.be/Lo-HSCqhIF8"
+      },
+      {
+        category: "ai-future",
+        priority: "圆桌",
+        title: "What it feels like to build in 2026",
+        session: "Closing keynote",
+        speaker: "Tommy Geoco; Catt Small; Matt D. Smith; Rasmus Andersson",
+        role: "UX Tools / Dropbox / Shift Nudge / Playbit",
+        theme: "2026 年构建产品的真实感受",
+        summary: "一场关于 AI 加速、混合角色、burnout、差异化和创作身份的坦诚讨论，提供一线设计与产品从业者的文化观察。",
+        insights: [
+          "AI 改变的不只是工具，还有设计师对自身身份和价值的理解。",
+          "当产出更快，差异化更依赖观点、品味和选择。",
+          "团队需要认真面对持续加速带来的疲劳和可持续问题。"
+        ],
+        tags: ["Future of work", "AI", "Design culture"],
+        link: "https://youtu.be/Lo-HSCqhIF8"
+      },
+      {
+        category: "craft-expression",
+        priority: "解释设计",
+        title: "Designing math",
+        session: "Opening keynotes",
+        speaker: "Grant Sanderson",
+        role: "YouTube educator, 3Blue1Brown",
+        theme: "用视觉和交互重新设计数学理解",
+        summary: "Grant Sanderson 讨论数学并非静态背诵，而是充满选择、创造和视觉思考；优秀解释设计可以改变人们与抽象知识的关系。",
+        insights: [
+          "解释本身是一种设计：它决定用户是否能和复杂概念建立关系。",
+          "动画、代码和视觉结构可以让抽象知识变得可感知。",
+          "设计师可以从教育内容中学习如何降低复杂性的进入门槛。"
+        ],
+        tags: ["Storytelling", "Visual design", "Education"],
+        link: "https://youtu.be/bLSLN96Gn-w"
+      },
+      {
+        category: "craft-expression",
+        priority: "可编程创作",
+        title: "Patterns for restarting the world",
+        session: "Opening keynotes",
+        speaker: "Switch Angel + LO.FI.SCI.FI",
+        role: "Artists & Software Engineers",
+        theme: "可编程创意工具与 live-coded music",
+        summary: "围绕 Strudel 这类 live-coded music 系统，讨论文本界面、可编程工具和创作自由如何重新塑造人与计算机的互动。",
+        insights: [
+          "文本界面并不落后，它可以给创作者极高自由度。",
+          "创作工具应该允许用户塑造系统，而不是只能消费固定功能。",
+          "HCI 的未来也可能来自艺术和软件维护实践。"
+        ],
+        tags: ["Creative coding", "HCI", "Tools"],
+        link: "https://youtu.be/bLSLN96Gn-w"
+      },
+      {
+        category: "ai-future",
+        priority: "角色演化",
+        title: "Designing in the age of the 10x engineer",
+        session: "Process",
+        speaker: "Andy Zhang",
+        role: "Design Engineer Lead, Google",
+        theme: "当创造摩擦降低后，设计师角色如何变化",
+        summary: "Andy Zhang 探讨当产品创建变得更无摩擦，设计师如何面对动态、意图驱动体验，并重新设计产品流程中的问题和判断。",
+        insights: [
+          "速度提高后，设计师的价值更集中在提出正确问题和设定方向。",
+          "Intent-driven experience 要求设计流程更动态，不再只交付静态 screens。",
+          "设计与工程边界会继续模糊，设计师需要理解系统生成逻辑。"
+        ],
+        tags: ["AI", "Design engineering", "Product"],
+        link: "https://youtu.be/4fZ3CeFu954"
+      },
+      {
+        category: "craft-expression",
+        priority: "UX 细节",
+        title: "The invisible mechanisms in your interfaces",
+        session: "Craft",
+        speaker: "Johannes Mutter",
+        role: "Design Engineer, mutter.co",
+        theme: "界面中不可见的交互机制",
+        summary: "Johannes Mutter 拆解界面底层机制，例如 cursor affinity 这类看似微小却影响真实使用体验的规则，强调 craft 来自对边界状态的命名和理解。",
+        insights: [
+          "高级 UX craft 往往藏在用户不会主动说出的微机制里。",
+          "给边界状态命名，是团队提升质量的第一步。",
+          "设计师需要收藏和复用交互机制，而不仅是视觉模式。"
+        ],
+        tags: ["UX", "Interaction", "Craft"],
+        link: "https://youtu.be/6Kxf4BJlA_s"
+      },
+      {
+        category: "culture-identity",
+        priority: "文化表达",
+        title: "The world of street art and care-filled design",
+        session: "Process",
+        speaker: "Ella Rochelle-Lawton",
+        role: "Project & Program Manager, First Amendment",
+        theme: "街头艺术、公共表达与关怀设计",
+        summary: "Ella Rochelle-Lawton 从街头艺术教育和 spray paint 实践出发，讨论最好的设计如何生活在街道、社区和具体文化情境中。",
+        insights: [
+          "设计不只发生在屏幕，也发生在城市、身体和社群中。",
+          "Care-filled design 需要尊重媒介、地点和参与者。",
+          "跨文化设计不是抽象标签，而是对语境和表达权的具体理解。"
+        ],
+        tags: ["Culture", "Street art", "Care"],
+        link: "https://youtu.be/5wNurWRnawU"
+      },
+      {
+        category: "trust-research",
+        priority: "实时洞察",
+        title: "Building real-time user insights into your design workflow",
+        session: "Process",
+        speaker: "Prayag Narula",
+        role: "CEO & Co-Founder, HeyMarvin",
+        theme: "把用户反馈嵌入设计流程",
+        summary: "HeyMarvin 展示如何把实时用户反馈放进设计工作流，使团队不必等到上线后才学习，而能在设计过程中持续校准方向。",
+        insights: [
+          "设计团队不应只是 ship 后才 learn。",
+          "研究工具如果嵌入画布和工作流，反馈会更容易转化为行动。",
+          "实时洞察让 AI 加速时代的决策更有依据。"
+        ],
+        tags: ["Research", "UX", "Workflow"],
+        link: "https://youtu.be/cYuTlnp3wLs"
+      },
+      {
+        category: "craft-expression",
+        priority: "界面密度",
+        title: "Dense by design",
+        session: "Craft",
+        speaker: "Matthew Ström-Awn",
+        role: "Founder, mu.design",
+        theme: "信息密度不是拥挤，而是价值组织",
+        summary: "从 Google、Yahoo、Bloomberg Terminal 等案例出发，Matthew Ström-Awn 讨论 UI density 如何在时间和空间中最大化用户价值。",
+        insights: [
+          "密度不是把更多东西塞进屏幕，而是提高单位时间和空间的价值。",
+          "高密度界面需要强信息架构和明确层级，不是视觉堆叠。",
+          "不同用户熟练度对应不同密度需求。"
+        ],
+        tags: ["UX", "Visual design", "Information density"],
+        link: "https://youtu.be/notTKhz8C2c"
+      },
+      {
+        category: "leadership-org",
+        priority: "企业 AI",
+        title: "Building AI products at enterprise scale",
+        session: "Leadership Collective",
+        speaker: "Dylan Field; Jeetu Patel",
+        role: "Figma / Cisco",
+        theme: "企业级 AI 产品中的设计与信任",
+        summary: "Cisco President & CPO Jeetu Patel 与 Figma CEO Dylan Field 讨论在企业产品中，基础设施、安全、工作流与 UX 如何共同塑造 AI 信任。",
+        insights: [
+          "企业 AI 的用户体验不只在界面层，也受安全、权限和基础设施影响。",
+          "信任来自可靠的系统行为，而不是营销层面的 AI 表述。",
+          "设计在企业 AI 中是战略能力，不是最后的 UI 包装。"
+        ],
+        tags: ["Enterprise", "AI", "Trust"],
+        link: "https://youtu.be/myhhqLnjAqY"
+      },
+      {
+        category: "culture-identity",
+        priority: "身份 UX",
+        title: "Usernames on Instagram: how a craft fix became an identity crisis",
+        session: "Craft",
+        speaker: "Rose McManus",
+        role: "Content Designer, Instagram (Meta)",
+        theme: "用户名、身份和内容设计",
+        summary: "Rose McManus 从 Instagram 一个看似小的 interface craft 修复讲起，延伸到用户名到底是什么，以及线上身份如何被系统语言塑造。",
+        insights: [
+          "内容设计里的小字段可能承载身份、文化和社会意义。",
+          "命名不是纯技术问题，它会改变用户如何被看见和理解。",
+          "好的 UX 需要把语言、政策和界面行为一起考虑。"
+        ],
+        tags: ["Content design", "Identity", "Meta"],
+        link: "https://youtu.be/njz16gKVLFs"
+      },
+      {
+        category: "ai-future",
+        priority: "流程重构",
+        title: "AI will upend your process—for the better",
+        session: "Process",
+        speaker: "Justin Meyer",
+        role: "CEO, Bitovi",
+        theme: "用 AI 重新设计软件交付生命周期",
+        summary: "Justin Meyer 用具体案例展示 AI 如何移除软件交付中的瓶颈，帮助团队重新思考 discovery、delivery 和价值验证之间的关系。",
+        insights: [
+          "AI 最有价值的地方是重构端到端流程，而非局部提效。",
+          "设计、产品和工程之间的 handoff 可以被重新设计。",
+          "更快交付不等于更好交付，关键仍是发现和验证价值。"
+        ],
+        tags: ["AI", "Process", "Delivery"],
+        link: "https://youtu.be/6nyveN7zfMQ"
+      },
+      {
+        category: "culture-identity",
+        priority: "低技术",
+        title: "The future is low-tech: lessons from the early 2000s",
+        session: "Process",
+        speaker: "Jésabel DC",
+        role: "Tech Anthropologist & EdTech Founder, The Lifestyle Lab",
+        theme: "从早期低技术体验学习平静设计",
+        summary: "Jésabel DC 回到 2000 年代的 loading bars、Tamagotchis、游戏与非榨取式技术体验，讨论更平静、更照顾神经系统的设计未来。",
+        insights: [
+          "未来不一定更高技术，也可能是更少干扰、更有人味的技术。",
+          "低技术可以是一种主动设计策略，而不是资源不足。",
+          "注意力调节和情绪负担应成为产品体验指标。"
+        ],
+        tags: ["Low-tech", "Culture", "Calm design"],
+        link: "https://youtu.be/otkSbl399tU"
+      },
+      {
+        category: "agent-workflows",
+        priority: "Weave",
+        title: "Inside the Weave workflow",
+        session: "Figma deep dive",
+        speaker: "Gal Sharir; Ron Baranov",
+        role: "Figma",
+        theme: "Weave 创作流程背后的真实决策",
+        summary: "Figma 团队展示 Weave 创作不是一个 polished final frame，而是 branching、sequencing、model chaining、编辑、错误和恢复组成的迭代系统。",
+        insights: [
+          "AI 创作不是一次生成，而是不断选择、链接模型和修复的过程。",
+          "错误和 recovery 是 workflow 的一部分，应该被设计进系统。",
+          "Weave 强调的是系统化创作判断，而不是单张图生成。"
+        ],
+        tags: ["Weave", "AI", "Creative workflow"],
+        link: "https://youtu.be/-ZoEot3OFr0"
+      },
+      {
+        category: "ai-future",
+        priority: "画布哲学",
+        title: "The canvas is not dead",
+        session: "Process",
+        speaker: "Catt Small",
+        role: "Staff Product Designer, Dropbox",
+        theme: "Prompt 时代画布为什么仍然重要",
+        summary: "Catt Small 反驳“画布已死，只需要 prompt 生成 UI”的说法。复杂产品、长期上下文和真实用户用例仍需要空间化探索与设计判断。",
+        insights: [
+          "Prompt 不能替代画布承载复杂产品关系的能力。",
+          "设计师需要在空间中组织上下文、状态、边界和取舍。",
+          "AI 生成越强，设计师越需要清楚地 curate context。"
+        ],
+        tags: ["Canvas", "AI", "UX"],
+        link: "https://youtu.be/WGZ38oeoBtU"
+      },
+      {
+        category: "systems-production",
+        priority: "设计系统",
+        title: "Everyone's still eating: building Notion's design system",
+        session: "Design systems",
+        speaker: "Tamara Chu; Shauna Sapper",
+        role: "Notion",
+        theme: "在产品运行中替换和建设设计系统",
+        summary: "Notion 团队用“大家还在吃饭时换桌布”的比喻，讲述如何在设计驱动、业务持续前进的公司中推进设计系统建设。",
+        insights: [
+          "设计系统迁移不是一次性工程，而是在真实产品节奏中持续发生。",
+          "系统建设是社会技术问题，需要兼顾组件、代码、团队习惯和 adoption。",
+          "优秀设计系统必须服务当前业务，而不是只追求理想架构。"
+        ],
+        tags: ["Design systems", "Notion", "Scale"],
+        link: "https://www.youtube.com/watch?v=u7_Qof3AJ1g"
+      },
+      {
+        category: "systems-production",
+        priority: "AI-ready 系统",
+        title: "Preparing Rocket for the AI era",
+        session: "Design systems",
+        speaker: "Emily Strobl; Will Hobick",
+        role: "Rocket",
+        theme: "让设计系统准备好支持 AI 工作",
+        summary: "Rocket 分享如何把 Figma ecosystem、design systems、Code Connect、Figma Make 等整合进组织工作方式，让数千人能够实际使用 AI。",
+        insights: [
+          "AI-ready 不只是启用工具，而是让系统、组件、代码和规则都可被调用。",
+          "设计系统正在成为 agent 理解产品的上下文基座。",
+          "大组织需要治理、培训和清晰边界，才能让 AI 真正进入日常工作。"
+        ],
+        tags: ["Design systems", "AI", "Code Connect"],
+        link: "https://youtu.be/TThJrINckys"
+      },
+      {
+        category: "trust-research",
+        priority: "决策信心",
+        title: "Designing with confidence in an AI-powered world",
+        session: "Strategy",
+        speaker: "Bobby Meixner",
+        role: "VP, Solution Marketing, UserTesting",
+        theme: "AI 加速后如何 defend design decisions",
+        summary: "UserTesting 分享 AI 提升 ideation 和 iteration 速度后，设计决策更难被捍卫的问题，并强调用户证据如何帮助团队形成信心。",
+        insights: [
+          "选项无限并不等于决策更好，反而可能让判断更困难。",
+          "AI 时代研究证据更重要，因为速度会放大错误。",
+          "设计信心来自可解释的学习过程，而不是方案数量。"
+        ],
+        tags: ["Research", "AI", "Confidence"],
+        link: "https://youtu.be/XOVcpvbblGY"
+      },
+      {
+        category: "systems-production",
+        priority: "AI 可读性",
+        title: "Designed to be read: making a system AI can actually use",
+        session: "Design systems",
+        speaker: "Harvey Whiting",
+        role: "Product Designer, Meta",
+        theme: "让设计系统真正能被 AI 使用",
+        summary: "Meta 团队分享与 Figma 一起测试 Figma Make 时，如何重建 legacy business design system，让系统更适合 AI 驱动的高质量输出。",
+        insights: [
+          "设计系统未来不仅要人类可读，也要 AI 可读。",
+          "组件、命名、文档和结构会直接影响 AI 输出质量。",
+          "如果 AI 用不好系统，往往暴露的是系统本身的语义缺口。"
+        ],
+        tags: ["Meta", "Design systems", "AI"],
+        link: "https://youtu.be/TQaYwH6f4DA"
+      },
+      {
+        category: "agent-workflows",
+        priority: "Make",
+        title: "Getting real output from Figma Make",
+        session: "Figma deep dive",
+        speaker: "Brett McMillin; Laura Fehre",
+        role: "Figma",
+        theme: "如何让 Figma Make 输出更真实可用",
+        summary: "Figma Designer Advocates 拆解高质量 Make 输出背后的准备：guidelines、file structure、component wiring、prompting、templates 和 presets。",
+        insights: [
+          "Make 的输出不是运气，而是由上下文质量和系统准备决定。",
+          "文件结构、组件连接和设计 guidelines 都是 prompt 的一部分。",
+          "AI 输出暴露出来的缺口，常常是团队设计系统需要补齐的地方。"
+        ],
+        tags: ["Figma Make", "AI", "Workflow"],
+        link: "https://youtu.be/q_-udq6jXpw"
+      },
+      {
+        category: "agent-workflows",
+        priority: "Agent 上下文",
+        title: "Design context for agentic workflows",
+        session: "Figma deep dive",
+        speaker: "Jake Albaugh",
+        role: "Developer Advocate, Figma",
+        theme: "Agentic workflow 前端的设计上下文",
+        summary: "Jake Albaugh 讨论如何利用 Figma 平台为 agentic workflow 提供清晰前置信息，让 AI 带着明确意图和设计上下文工作。",
+        insights: [
+          "Agentic workflow 成功的前提是开始阶段就有清晰 context。",
+          "设计上下文可以帮助 AI 更有意图地行动，而不是盲目生成。",
+          "设计师需要把平台里的信息组织成 agent 能理解的共享语言。"
+        ],
+        tags: ["Agentic workflows", "Figma", "AI"],
+        link: "https://youtu.be/D5WUW9X_-L0"
+      }
+    ];
+
+    const categoryMap = new Map(categories.map(c => [c.id, c]));
+    const filters = [
+      { id: "all", label: "全部" },
+      ...categories.map(c => ({ id: c.id, label: c.label }))
+    ];
+
+    let activeFilter = "all";
+    let query = "";
+
+    function textForSearch(session) {
+      return [
+        session.title,
+        session.session,
+        session.speaker,
+        session.role,
+        session.theme,
+        session.summary,
+        session.tags.join(" "),
+        session.insights.join(" ")
+      ].join(" ").toLowerCase();
+    }
+
+    function getVisibleSessions() {
+      const q = query.trim().toLowerCase();
+      return sessions.filter(session => {
+        const byFilter = activeFilter === "all" || session.category === activeFilter;
+        const bySearch = !q || textForSearch(session).includes(q);
+        return byFilter && bySearch;
+      });
+    }
+
+    function renderFilters() {
+      const root = document.getElementById("filters");
+      root.innerHTML = filters.map(filter => `
+        <button class="filter-button" data-filter="${filter.id}" aria-pressed="${filter.id === activeFilter}">
+          ${filter.label}
+        </button>
+      `).join("");
+      root.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", () => {
+          activeFilter = button.dataset.filter;
+          render();
+        });
+      });
+    }
+
+    function youtubeId(url) {
+      const parsed = new URL(url);
+      if (parsed.hostname.includes("youtu.be")) {
+        return parsed.pathname.split("/").filter(Boolean)[0];
+      }
+      return parsed.searchParams.get("v");
+    }
+
+    function youtubeThumbnail(url) {
+      const id = youtubeId(url);
+      const fallbackThumbs = {
+        "-ZoEot3OFr0": "assets/thumbs/weave-workflow.svg"
+      };
+      if (!id) return "";
+      return fallbackThumbs[id] || `assets/thumbs/${id}.jpg`;
+    }
+
+    function card(session) {
+      const thumbnail = youtubeThumbnail(session.link);
+      return `
+        <article class="session-card">
+          <a class="thumb-link" href="${session.link}" target="_blank" rel="noreferrer" aria-label="观看 ${session.title} 官方录屏">
+            <img class="thumb" src="${thumbnail}" alt="${session.title} official recording thumbnail" loading="lazy">
+          </a>
+          <div class="card-top">
+            <span class="pill">${session.session}</span>
+            <span class="pill score">${session.priority}</span>
+          </div>
+          <p class="theme-line">${session.theme}</p>
+          <h3 class="card-title">${session.title}</h3>
+          <p class="speaker"><strong>${session.speaker}</strong><br>${session.role}</p>
+
+          <p class="summary">${session.summary}</p>
+
+          <p class="label">Key insights</p>
+          <ul class="insights">
+            ${session.insights.map(item => `<li>${item}</li>`).join("")}
+          </ul>
+
+          <div class="card-actions">
+            <a class="watch-link" href="${session.link}" target="_blank" rel="noreferrer">观看官方录屏 ↗</a>
+            <div class="tags">${session.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}</div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderTopics(visible) {
+      const root = document.getElementById("topic-root");
+      root.innerHTML = categories.map(category => {
+        const items = visible.filter(session => session.category === category.id);
+        if (!items.length) return "";
+        return `
+          <section class="topic-section" id="${category.id}">
+            <div class="topic-head">
+              <div>
+                <h3 class="topic-title">${category.label}</h3>
+                <p class="topic-summary">${category.intro}</p>
+              </div>
+              <span class="topic-count">${items.length} 个 speaking 内容</span>
+            </div>
+            <div class="session-grid">
+              ${items.map(card).join("")}
+            </div>
+          </section>
+        `;
+      }).join("");
+    }
+
+    function render() {
+      renderFilters();
+      const visible = getVisibleSessions();
+      renderTopics(visible);
+      document.getElementById("count").textContent =
+        `显示 ${visible.length} / ${sessions.length} 个 speaking 内容；覆盖 ${new Set(visible.map(s => s.link)).size} 个官方录屏。`;
+      document.getElementById("empty").style.display = visible.length ? "none" : "block";
+    }
+
+    document.getElementById("search").addEventListener("input", event => {
+      query = event.target.value;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
