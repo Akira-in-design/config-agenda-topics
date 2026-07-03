@@ -296,6 +296,19 @@
       scroll-snap-type: x proximity;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
+    }
+
+    .filters.can-scroll-left {
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px);
+      mask-image: linear-gradient(90deg, transparent, #000 24px);
+    }
+
+    .filters.can-scroll-right {
+      -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+      mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+    }
+
+    .filters.can-scroll-left.can-scroll-right {
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
       mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
     }
@@ -732,12 +745,12 @@
         all: "All",
         sortNote: "Sorted by design theme first, then by relevance inside each theme rather than livestream time.",
         empty: "No matching sessions. Try another keyword or topic.",
-        footerSource: "Source: Config 2026 San Francisco official agenda and the Figma YouTube recordings linked from it. Generated on 2026-06-29; bilingual refresh on 2026-07-03. Note: this page includes only sessions that currently have official YouTube recording links.",
+        footerSource: "Source: Config 2026 San Francisco official agenda and the Figma YouTube recordings linked from it. Generated on 2026-06-29; bilingual refresh on 2026-07-03.",
         footerNote: "Designed to help designers find the right Config sessions faster.",
         count: (visible, total, recordings) => `Showing ${visible} / ${total} speaking moments across ${recordings} official recordings.`,
         topicCount: count => `${count} speaking moments`,
         label: "Design takeaways",
-        watch: "Watch video ↗"
+        watch: "Watch recording ↗"
       },
       zh: {
         officialAgenda: "官方 Agenda ↗",
@@ -763,7 +776,7 @@
         all: "全部",
         sortNote: "排序方式：主题优先；同一主题内按内容关联度排列，而不是按直播时间。",
         empty: "没有匹配的 session。换一个关键词或主题试试。",
-        footerSource: "数据来源：Config 2026 San Francisco 官方 Agenda 与其记录的 Figma 官方 YouTube 录屏链接。本页生成日期：2026-06-29；双语优化日期：2026-07-03。说明：本页只收录官方 Agenda 当前提供 YouTube 录屏链接的 speaking 内容。仍显示 “Recording coming soon” 或未提供录屏链接的场次没有被纳入卡片，避免误导。",
+        footerSource: "数据来源：Config 2026 San Francisco 官方 Agenda 与其记录的 Figma 官方 YouTube 录屏链接。本页生成日期：2026-06-29；双语优化日期：2026-07-03。",
         footerNote: "Designed to help designers find the right Config sessions faster.",
         count: (visible, total, recordings) => `显示 ${visible} / ${total} 个 speaking 内容；覆盖 ${recordings} 个官方录屏。`,
         topicCount: count => `${count} 个 speaking 内容`,
@@ -1914,6 +1927,7 @@
     const supportedLangs = ["en", "zh"];
     let activeFilter = "all";
     let query = "";
+    let scrollSyncQueued = false;
     let currentLang = supportedLangs.includes(localStorage.getItem("configRecapLang"))
       ? localStorage.getItem("configRecapLang")
       : "en";
@@ -2023,6 +2037,52 @@
           render();
         });
       });
+      root.addEventListener("scroll", updateFilterEdgeState, { passive: true });
+    }
+
+    function updateFilterEdgeState() {
+      const root = document.getElementById("filters");
+      const maxScroll = Math.max(0, root.scrollWidth - root.clientWidth);
+      root.classList.toggle("can-scroll-left", root.scrollLeft > 2);
+      root.classList.toggle("can-scroll-right", root.scrollLeft < maxScroll - 2);
+    }
+
+    function scrollFilterTo(filterId, behavior = "smooth") {
+      const root = document.getElementById("filters");
+      const button = root.querySelector(`[data-filter="${filterId}"]`);
+      if (!button) return;
+      const maxScroll = Math.max(0, root.scrollWidth - root.clientWidth);
+      const categoryIndex = categories.findIndex(category => category.id === filterId);
+      const shouldPinRight = categoryIndex >= categories.length - 2;
+      const target = shouldPinRight ? maxScroll : Math.min(button.offsetLeft, maxScroll);
+      root.scrollTo({ left: target, behavior });
+      window.setTimeout(updateFilterEdgeState, behavior === "smooth" ? 260 : 0);
+    }
+
+    function currentTopicFromViewport() {
+      const sections = categories
+        .map(category => document.getElementById(category.id))
+        .filter(Boolean);
+      if (!sections.length) return null;
+      const anchor = Math.min(window.innerHeight * .38, 360);
+      let current = null;
+      sections.forEach(section => {
+        if (section.getBoundingClientRect().top <= anchor) current = section;
+      });
+      return current?.id || null;
+    }
+
+    function syncFilterToCurrentTopic() {
+      scrollSyncQueued = false;
+      if (activeFilter !== "all") return;
+      const currentTopic = currentTopicFromViewport();
+      if (currentTopic) scrollFilterTo(currentTopic, "auto");
+    }
+
+    function queueFilterScrollSync() {
+      if (scrollSyncQueued) return;
+      scrollSyncQueued = true;
+      window.requestAnimationFrame(syncFilterToCurrentTopic);
     }
 
     function youtubeId(url) {
@@ -2104,6 +2164,14 @@
       document.getElementById("count").textContent =
         ui[currentLang].count(visible.length, sessions.length, new Set(visible.map(s => s.link)).size);
       document.getElementById("empty").style.display = visible.length ? "none" : "block";
+      window.requestAnimationFrame(() => {
+        if (activeFilter === "all") {
+          scrollFilterTo(currentTopicFromViewport() || "all", "auto");
+        } else {
+          scrollFilterTo(activeFilter, "auto");
+        }
+        updateFilterEdgeState();
+      });
     }
 
     document.getElementById("search").addEventListener("input", event => {
@@ -2117,6 +2185,12 @@
         localStorage.setItem("configRecapLang", currentLang);
         render();
       });
+    });
+
+    window.addEventListener("scroll", queueFilterScrollSync, { passive: true });
+    window.addEventListener("resize", () => {
+      updateFilterEdgeState();
+      queueFilterScrollSync();
     });
 
     render();
