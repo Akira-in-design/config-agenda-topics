@@ -287,7 +287,7 @@
 
     .filter-shell {
       display: grid;
-      grid-template-columns: 34px minmax(0, 1fr) 34px;
+      grid-template-columns: 38px minmax(0, 1fr) 38px;
       gap: 8px;
       align-items: center;
       min-width: 0;
@@ -297,21 +297,35 @@
       appearance: none;
       display: grid;
       place-items: center;
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--line);
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid var(--ink);
       border-radius: 50%;
       background: white;
       color: var(--ink);
       cursor: pointer;
-      font-size: 18px;
-      font-weight: 900;
-      line-height: 1;
-      transition: opacity .16s ease, transform .16s ease, border-color .16s ease;
+      transition: opacity .16s ease, transform .16s ease, background .16s ease, color .16s ease;
+    }
+
+    .filter-nav::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+    }
+
+    .filter-nav[data-filter-nav="left"]::before {
+      transform: translateX(2px) rotate(-135deg);
+    }
+
+    .filter-nav[data-filter-nav="right"]::before {
+      transform: translateX(-2px) rotate(45deg);
     }
 
     .filter-nav:hover:not(:disabled) {
-      border-color: var(--ink);
+      background: var(--ink);
+      color: white;
       transform: translateY(-1px);
     }
 
@@ -333,17 +347,17 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    .filters.can-scroll-left {
+    .filters.fade-left {
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px);
       mask-image: linear-gradient(90deg, transparent, #000 24px);
     }
 
-    .filters.can-scroll-right {
+    .filters.fade-right {
       -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
       mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
     }
 
-    .filters.can-scroll-left.can-scroll-right {
+    .filters.fade-left.fade-right {
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
       mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
     }
@@ -656,8 +670,8 @@
       .section { margin-top: 50px; }
       .section-head, .meta-line, .topic-head, footer { grid-template-columns: 1fr; flex-direction: column; align-items: flex-start; }
       .toolbar { grid-template-columns: 1fr; position: static; }
-      .filter-shell { grid-template-columns: 30px minmax(0, 1fr) 30px; }
-      .filter-nav { width: 30px; height: 30px; }
+      .filter-shell { grid-template-columns: 34px minmax(0, 1fr) 34px; }
+      .filter-nav { width: 34px; height: 34px; }
       .filters { justify-content: flex-start; }
       .filter-button { text-align: left; }
       .session-grid { grid-template-columns: 1fr; }
@@ -739,9 +753,9 @@
       <div class="toolbar" aria-label="Session filters">
         <input class="search" id="search" type="search">
         <div class="filter-shell">
-          <button class="filter-nav" type="button" data-filter-nav="left" aria-label="Scroll filters left">‹</button>
+          <button class="filter-nav" type="button" data-filter-nav="left" aria-label="Scroll filters left"></button>
           <div class="filters" id="filters"></div>
-          <button class="filter-nav" type="button" data-filter-nav="right" aria-label="Scroll filters right">›</button>
+          <button class="filter-nav" type="button" data-filter-nav="right" aria-label="Scroll filters right"></button>
         </div>
       </div>
       <div class="meta-line">
@@ -1971,6 +1985,7 @@
     let scrollSyncQueued = false;
     let lastSyncedTopic = null;
     let pendingFilterScrollBehavior = "auto";
+    let pendingPageScrollTarget = null;
     let filtersScrollListenerBound = false;
     let currentLang = supportedLangs.includes(localStorage.getItem("configRecapLang"))
       ? localStorage.getItem("configRecapLang")
@@ -2080,6 +2095,7 @@
           activeFilter = button.dataset.filter;
           lastSyncedTopic = activeFilter === "all" ? null : activeFilter;
           pendingFilterScrollBehavior = "smooth";
+          pendingPageScrollTarget = activeFilter;
           render();
         });
       });
@@ -2097,8 +2113,20 @@
       const maxScroll = Math.max(0, root.scrollWidth - root.clientWidth);
       const canScrollLeft = root.scrollLeft > 2;
       const canScrollRight = root.scrollLeft < maxScroll - 2;
+      const rootRect = root.getBoundingClientRect();
+      const buttons = [...root.querySelectorAll(".filter-button")];
+      const fadeLeft = buttons.some(button => {
+        const rect = button.getBoundingClientRect();
+        return rect.left < rootRect.left - 2 && rect.right > rootRect.left + 2;
+      });
+      const fadeRight = buttons.some(button => {
+        const rect = button.getBoundingClientRect();
+        return rect.left < rootRect.right - 2 && rect.right > rootRect.right + 2;
+      });
       root.classList.toggle("can-scroll-left", canScrollLeft);
       root.classList.toggle("can-scroll-right", canScrollRight);
+      root.classList.toggle("fade-left", fadeLeft);
+      root.classList.toggle("fade-right", fadeRight);
       document.querySelector('[data-filter-nav="left"]').disabled = !canScrollLeft;
       document.querySelector('[data-filter-nav="right"]').disabled = !canScrollRight;
     }
@@ -2155,6 +2183,16 @@
       if (scrollSyncQueued) return;
       scrollSyncQueued = true;
       window.requestAnimationFrame(syncFilterToCurrentTopic);
+    }
+
+    function scrollPageToFilter(filterId) {
+      const target = filterId === "all"
+        ? document.getElementById("sessions")
+        : document.getElementById(filterId);
+      if (!target) return;
+      const offset = window.innerWidth <= 720 ? 16 : 92;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
     }
 
     function youtubeId(url) {
@@ -2246,6 +2284,11 @@
           scrollFilterTo(activeFilter, behavior);
         }
         updateFilterEdgeState();
+        if (pendingPageScrollTarget) {
+          const target = pendingPageScrollTarget;
+          pendingPageScrollTarget = null;
+          window.requestAnimationFrame(() => scrollPageToFilter(target));
+        }
       });
     }
 
