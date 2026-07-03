@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>Config 2026 · 设计师主题复盘</title>
+  <title>Config 2026 · Designer Recap</title>
   <style>
     :root {
       --ink: #161616;
@@ -29,10 +29,7 @@
     body {
       margin: 0;
       color: var(--ink);
-      background:
-        radial-gradient(circle at 8% 4%, rgba(216, 255, 82, .45), transparent 22rem),
-        radial-gradient(circle at 94% 16%, rgba(117, 89, 255, .18), transparent 26rem),
-        var(--paper);
+      background: var(--paper);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     }
@@ -53,7 +50,7 @@
       gap: 16px;
       margin-bottom: 22px;
       font-size: 13px;
-      letter-spacing: .04em;
+      letter-spacing: 0;
       text-transform: uppercase;
     }
 
@@ -84,15 +81,41 @@
 
     .top-links a { text-underline-offset: 4px; }
 
+    .lang-toggle {
+      display: inline-flex;
+      padding: 3px;
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      background: white;
+    }
+
+    .lang-button {
+      appearance: none;
+      min-width: 44px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .lang-button[aria-pressed="true"] {
+      background: var(--ink);
+      color: white;
+    }
+
     .hero {
       position: relative;
       overflow: hidden;
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(340px, .8fr);
       gap: 36px;
-      padding: clamp(28px, 5vw, 72px);
+      padding: 64px;
       border: 2px solid var(--ink);
-      border-radius: 30px;
+      border-radius: 24px;
       background: var(--panel);
       box-shadow: var(--shadow);
     }
@@ -112,9 +135,10 @@
     h1 {
       max-width: 900px;
       margin: 0 0 20px;
-      font-size: clamp(48px, 7.2vw, 108px);
-      line-height: .88;
-      letter-spacing: -.068em;
+      font-size: 88px;
+      line-height: .9;
+      letter-spacing: 0;
+      text-wrap: balance;
     }
 
     h1 span {
@@ -126,7 +150,7 @@
       max-width: 760px;
       margin: 0;
       color: #49443d;
-      font-size: clamp(16px, 1.45vw, 21px);
+      font-size: 19px;
       line-height: 1.68;
     }
 
@@ -141,7 +165,7 @@
     .stat {
       padding: 20px;
       border: 1.5px solid var(--ink);
-      border-radius: 18px;
+      border-radius: 8px;
       background: rgba(255, 253, 247, .94);
     }
 
@@ -150,7 +174,7 @@
       margin-bottom: 6px;
       font-size: 30px;
       line-height: 1;
-      letter-spacing: -.045em;
+      letter-spacing: 0;
     }
 
     .stat span {
@@ -173,9 +197,10 @@
 
     h2 {
       margin: 0;
-      font-size: clamp(34px, 5vw, 66px);
-      line-height: .95;
-      letter-spacing: -.055em;
+      font-size: 56px;
+      line-height: 1;
+      letter-spacing: 0;
+      text-wrap: balance;
     }
 
     .section-intro {
@@ -195,7 +220,7 @@
       min-height: 190px;
       padding: 20px;
       border: 1.5px solid var(--ink);
-      border-radius: 18px;
+      border-radius: 8px;
       background: var(--panel);
     }
 
@@ -209,7 +234,7 @@
       margin-bottom: 12px;
       font-size: 20px;
       line-height: 1.15;
-      letter-spacing: -.025em;
+      letter-spacing: 0;
     }
 
     .brief-card p {
@@ -268,6 +293,9 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 800;
+      max-width: 210px;
+      white-space: normal;
+      text-align: center;
     }
 
     .filter-button:hover,
@@ -303,9 +331,10 @@
 
     .topic-title {
       margin: 0;
-      font-size: clamp(28px, 3.6vw, 48px);
+      font-size: 42px;
       line-height: 1;
-      letter-spacing: -.045em;
+      letter-spacing: 0;
+      text-wrap: balance;
     }
 
     .topic-summary {
@@ -339,9 +368,12 @@
       min-height: 590px;
       padding: 22px;
       border: 1.5px solid var(--line);
-      border-radius: 22px;
+      border-radius: 8px;
       background: rgba(255, 253, 247, .86);
       overflow: hidden;
+      min-width: 0;
+      overflow-wrap: break-word;
+      hyphens: auto;
       transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
 
@@ -375,6 +407,7 @@
 
     .card-top {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       gap: 12px;
       align-items: flex-start;
@@ -392,9 +425,10 @@
       color: #4b453d;
       font-size: 11px;
       font-weight: 900;
-      letter-spacing: .035em;
+      letter-spacing: 0;
       text-transform: uppercase;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .score {
@@ -407,7 +441,8 @@
       margin: 0 0 10px;
       font-size: 22px;
       line-height: 1.12;
-      letter-spacing: -.026em;
+      letter-spacing: 0;
+      text-wrap: balance;
     }
 
     .theme-line {
@@ -430,7 +465,7 @@
       color: #4f4a43;
       font-size: 12px;
       font-weight: 900;
-      letter-spacing: .04em;
+      letter-spacing: 0;
       text-transform: uppercase;
     }
 
@@ -511,7 +546,7 @@
       display: none;
       padding: 48px;
       border: 1px dashed var(--muted);
-      border-radius: 18px;
+      border-radius: 8px;
       color: var(--muted);
       text-align: center;
       background: rgba(255,255,255,.5);
@@ -545,19 +580,24 @@
       .hero-aside { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .brief-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .session-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      h1 { font-size: 72px; }
+      h2 { font-size: 48px; }
     }
 
     @media (max-width: 720px) {
       .page { width: min(100% - 24px, 1480px); padding-top: 14px; }
       .topbar { align-items: flex-start; flex-direction: column; }
-      .top-links { justify-content: flex-start; }
+      .top-links { justify-content: flex-start; width: 100%; }
       .hero { padding: 24px; border-radius: 22px; }
       h1 { font-size: 52px; }
+      h2 { font-size: 40px; }
+      .topic-title { font-size: 32px; }
       .hero-aside, .brief-grid { grid-template-columns: 1fr; }
       .section { margin-top: 50px; }
       .section-head, .meta-line, .topic-head, footer { grid-template-columns: 1fr; flex-direction: column; align-items: flex-start; }
       .toolbar { grid-template-columns: 1fr; position: static; }
       .filters { justify-content: flex-start; }
+      .filter-button { max-width: none; text-align: left; }
       .session-grid { grid-template-columns: 1fr; }
       .session-card { min-height: auto; }
       .card-actions { flex-direction: column; align-items: flex-start; }
@@ -565,7 +605,7 @@
     }
   </style>
 </head>
-<body>
+<body data-lang="en">
   <main class="page">
     <header class="topbar">
       <div class="brand">
@@ -573,136 +613,191 @@
         Config 2026 · Designer Recap
       </div>
       <div class="top-links">
-        <a href="https://config.figma.com/san-francisco/agenda/" target="_blank" rel="noreferrer">Official agenda ↗</a>
-        <a href="https://www.youtube.com/@Figma" target="_blank" rel="noreferrer">Figma YouTube ↗</a>
-        <a href="../config-agenda-beijing/index.html">原北京时间版 ↗</a>
+        <a href="https://config.figma.com/san-francisco/agenda/" target="_blank" rel="noreferrer" data-i18n="officialAgenda">Official agenda ↗</a>
+        <a href="https://www.youtube.com/@Figma" target="_blank" rel="noreferrer" data-i18n="figmaYoutube">Figma YouTube ↗</a>
+        <div class="lang-toggle" aria-label="Language">
+          <button class="lang-button" type="button" data-lang-button="en" aria-pressed="true">EN</button>
+          <button class="lang-button" type="button" data-lang-button="zh" aria-pressed="false">中文</button>
+        </div>
       </div>
     </header>
 
     <section class="hero">
       <div>
-        <h1>Config <span>重点内容地图</span></h1>
-        <p class="hero-copy">
-          这版面向错过直播的设计师：把已发布官方录屏按主题重组，
-          快速看到每场的主讲人、演讲主题、内容概要、关键洞察，以及对应的 Figma 官方 YouTube 录屏。
-        </p>
+        <h1 id="hero-title">Config <span>Designer Recap</span></h1>
+        <p class="hero-copy" id="hero-copy"></p>
       </div>
       <aside class="hero-aside">
         <div class="stat">
           <strong>40</strong>
-          <span>官方 Agenda 当前已提供录屏链接的 session</span>
+          <span id="stat-1"></span>
         </div>
         <div class="stat">
           <strong>42</strong>
-          <span>拆分后的 speaking 内容点；合并 keynote 中的多段演讲单独展示</span>
+          <span id="stat-2"></span>
         </div>
         <div class="stat">
           <strong>7</strong>
-          <span>面向设计师重新整理的主题路径</span>
+          <span id="stat-3"></span>
         </div>
       </aside>
     </section>
 
     <section class="section">
       <div class="section-head">
-        <h2>大会更新<br>先读这四点</h2>
-        <p class="section-intro">
-          Config 2026 的主线不是“AI 多了几个按钮”，而是设计工作方式被重新组织：
-          context、trust、systems、craft 变成 AI 时代的核心能力。
-        </p>
+        <h2 id="brief-title"></h2>
+        <p class="section-intro" id="brief-intro"></p>
       </div>
       <div class="brief-grid">
         <article class="brief-card">
-          <b>AI 从工具变成协作者</b>
-          <p>Figma Agent、Make、Weave、生成式插件都指向同一个变化：设计不再只是操作画布，而是把意图、上下文和规则交给系统协作。</p>
+          <b id="brief-1-title"></b>
+          <p id="brief-1-body"></p>
         </article>
         <article class="brief-card">
-          <b>设计质量更依赖系统可读性</b>
-          <p>设计系统、内容系统和文件结构开始承担“让 AI 看懂”的责任。好的系统不只是给人复用，也要能被 agent 正确调用。</p>
+          <b id="brief-2-title"></b>
+          <p id="brief-2-body"></p>
         </article>
         <article class="brief-card">
-          <b>信任是 AI 产品的界面问题</b>
-          <p>Waymo、Gemini Enterprise、Cisco 等案例都在说明：透明并不等于可信，关键是让系统意图、状态和限制被用户理解。</p>
+          <b id="brief-3-title"></b>
+          <p id="brief-3-body"></p>
         </article>
         <article class="brief-card">
-          <b>人的判断仍是差异化来源</b>
-          <p>社区、文化语境、身份、低技术与 craft 的 session 共同提醒：平均水平会被自动化，但观点、品味和关怀不会自动出现。</p>
+          <b id="brief-4-title"></b>
+          <p id="brief-4-body"></p>
         </article>
       </div>
     </section>
 
     <section class="section" id="sessions">
       <div class="section-head">
-        <h2>主题式<br>Speaking Sessions</h2>
-        <p class="section-intro">
-          用搜索和主题筛选快速定位你要看的内容。每张卡片都指向对应的官方 YouTube 录屏。
-        </p>
+        <h2 id="sessions-title"></h2>
+        <p class="section-intro" id="sessions-intro"></p>
       </div>
 
       <div class="toolbar" aria-label="Session filters">
-        <input class="search" id="search" type="search" placeholder="搜索标题、主讲人、公司、关键词，例如 AI / trust / design system / culture">
+        <input class="search" id="search" type="search">
         <div class="filters" id="filters"></div>
       </div>
       <div class="meta-line">
         <span id="count"></span>
-        <span>排序方式：主题优先；同一主题内按内容关联度排列，而不是按直播时间。</span>
+        <span id="sort-note"></span>
       </div>
 
       <div id="topic-root"></div>
-      <div class="empty" id="empty">没有匹配的 session。换一个关键词或主题试试。</div>
+      <div class="empty" id="empty"></div>
 
-      <div class="note">
-        说明：本页只收录官方 Agenda 当前提供 YouTube 录屏链接的 speaking 内容。
-        仍显示 “Recording coming soon” 或未提供录屏链接的场次没有被纳入卡片，避免误导。
-        摘要与 key insights 基于官方 session 描述、讲者信息和录屏元数据进行中文归纳。
-      </div>
+      <div class="note" id="note"></div>
     </section>
 
     <footer>
-      <div>
-        数据来源：Config 2026 San Francisco 官方 Agenda 与其记录的 Figma 官方 YouTube 录屏链接。
-        本页生成日期：2026-06-29。原始北京时间日程副本保留在 <code>config-agenda-beijing</code>。
-      </div>
-      <div>Made for design review, not calendar planning.</div>
+      <div id="footer-source"></div>
+      <div id="footer-note"></div>
     </footer>
   </main>
 
   <script>
+    const ui = {
+      en: {
+        officialAgenda: "Official agenda ↗",
+        figmaYoutube: "Figma YouTube ↗",
+        heroTitle: "Config <span>Designer Recap</span>",
+        heroCopy: "A topic-led recap for global design colleagues: the published Config 2026 recordings are reorganized into practical design paths, with sharper takeaways on AI collaboration, systems, trust, craft, and design leadership.",
+        stats: [
+          "recorded sessions currently available from the official agenda",
+          "speaking moments after splitting multi-part keynotes into usable design topics",
+          "curated paths for designers, design leaders, and design technologists"
+        ],
+        briefTitle: "Read the shift\nbefore the sessions",
+        briefIntro: "Config 2026 is less about adding AI features and more about redesigning how design work is structured. Context, trust, systems, and taste become operating skills.",
+        briefs: [
+          ["AI becomes part of the work surface", "Agent, Make, Weave, and generative plugins point to the same shift: the designer is no longer only manipulating pixels, but shaping intent, context, rules, and feedback loops."],
+          ["Systems now need to be legible to machines", "Design systems, content systems, and file structure are becoming inputs for AI. The best systems will be reusable by people and interpretable by agents."],
+          ["Trust is a design material", "The enterprise and mobility talks make a quiet point: transparency alone does not create trust. Users need to understand system intent, limits, status, and responsibility."],
+          ["Taste gets more valuable, not less", "Automation raises the floor. Differentiation moves toward judgment, critique, cultural fluency, care, and the ability to decide what is worth making." ]
+        ],
+        sessionsTitle: "Topic-led\nSpeaking Sessions",
+        sessionsIntro: "Search or filter by design path. Each card links to the official Figma YouTube recording and extracts what matters for design practice.",
+        searchPlaceholder: "Search title, speaker, company, or topic, e.g. AI / trust / design system / culture",
+        all: "All",
+        sortNote: "Sorted by design theme first, then by relevance inside each theme rather than livestream time.",
+        empty: "No matching sessions. Try another keyword or topic.",
+        note: "Note: This page includes only sessions that currently have official YouTube recording links in the Config agenda. Sessions still marked as recording coming soon are excluded to avoid dead ends.",
+        footerSource: "Source: Config 2026 San Francisco official agenda and the Figma YouTube recordings linked from it. Generated on 2026-06-29; bilingual refresh on 2026-07-03.",
+        footerNote: "Made for design review, not calendar planning.",
+        count: (visible, total, recordings) => `Showing ${visible} / ${total} speaking moments across ${recordings} official recordings.`,
+        topicCount: count => `${count} speaking moments`,
+        label: "Design takeaways",
+        watch: "Watch official recording ↗"
+      },
+      zh: {
+        officialAgenda: "官方 Agenda ↗",
+        figmaYoutube: "Figma YouTube ↗",
+        heroTitle: "Config <span>重点内容地图</span>",
+        heroCopy: "这版面向错过直播的设计师：把已发布官方录屏按主题重组，快速看到每场的主讲人、演讲主题、内容概要、关键洞察，以及对应的 Figma 官方 YouTube 录屏。",
+        stats: [
+          "官方 Agenda 当前已提供录屏链接的 session",
+          "拆分后的 speaking 内容点；合并 keynote 中的多段演讲单独展示",
+          "面向设计师重新整理的主题路径"
+        ],
+        briefTitle: "大会更新\n先读这四点",
+        briefIntro: "Config 2026 的主线不是“AI 多了几个按钮”，而是设计工作方式被重新组织：context、trust、systems、craft 变成 AI 时代的核心能力。",
+        briefs: [
+          ["AI 从工具变成协作者", "Figma Agent、Make、Weave、生成式插件都指向同一个变化：设计不再只是操作画布，而是把意图、上下文和规则交给系统协作。"],
+          ["设计质量更依赖系统可读性", "设计系统、内容系统和文件结构开始承担“让 AI 看懂”的责任。好的系统不只是给人复用，也要能被 agent 正确调用。"],
+          ["信任是 AI 产品的界面问题", "Waymo、Gemini Enterprise、Cisco 等案例都在说明：透明并不等于可信，关键是让系统意图、状态和限制被用户理解。"],
+          ["人的判断仍是差异化来源", "社区、文化语境、身份、低技术与 craft 的 session 共同提醒：平均水平会被自动化，但观点、品味和关怀不会自动出现。"]
+        ],
+        sessionsTitle: "主题式\nSpeaking Sessions",
+        sessionsIntro: "用搜索和主题筛选快速定位你要看的内容。每张卡片都指向对应的官方 YouTube 录屏。",
+        searchPlaceholder: "搜索标题、主讲人、公司、关键词，例如 AI / trust / design system / culture",
+        all: "全部",
+        sortNote: "排序方式：主题优先；同一主题内按内容关联度排列，而不是按直播时间。",
+        empty: "没有匹配的 session。换一个关键词或主题试试。",
+        note: "说明：本页只收录官方 Agenda 当前提供 YouTube 录屏链接的 speaking 内容。仍显示 “Recording coming soon” 或未提供录屏链接的场次没有被纳入卡片，避免误导。摘要与 key insights 基于官方 session 描述、讲者信息和录屏元数据进行中文归纳。",
+        footerSource: "数据来源：Config 2026 San Francisco 官方 Agenda 与其记录的 Figma 官方 YouTube 录屏链接。本页生成日期：2026-06-29；双语优化日期：2026-07-03。",
+        footerNote: "Made for design review, not calendar planning.",
+        count: (visible, total, recordings) => `显示 ${visible} / ${total} 个 speaking 内容；覆盖 ${recordings} 个官方录屏。`,
+        topicCount: count => `${count} 个 speaking 内容`,
+        label: "Key insights",
+        watch: "观看官方录屏 ↗"
+      }
+    };
+
     const categories = [
       {
         id: "ai-future",
-        label: "AI 与设计未来",
-        intro: "关注 AI 如何改变设计师角色、创作方式、产品过程和专业价值。"
+        label: { en: "AI and the future of design", zh: "AI 与设计未来" },
+        intro: { en: "How AI changes designer roles, creation models, product process, and professional value.", zh: "关注 AI 如何改变设计师角色、创作方式、产品过程和专业价值。" }
       },
       {
         id: "agent-workflows",
-        label: "Agent、Make 与工作流",
-        intro: "把 AI 放进真实设计流程：上下文、插件、文件结构、agent 协作和可复用工作流。"
+        label: { en: "Agents, Make, and workflows", zh: "Agent、Make 与工作流" },
+        intro: { en: "Putting AI into real design practice: context, plugins, file structure, agent collaboration, and repeatable workflows.", zh: "把 AI 放进真实设计流程：上下文、插件、文件结构、agent 协作和可复用工作流。" }
       },
       {
         id: "trust-research",
-        label: "信任、研究与决策",
-        intro: "AI 速度提高后，用户理解、研究证据和决策可信度变得更重要。"
+        label: { en: "Trust, research, and decisions", zh: "信任、研究与决策" },
+        intro: { en: "As AI increases speed, user understanding, research evidence, and decision confidence become more important.", zh: "AI 速度提高后，用户理解、研究证据和决策可信度变得更重要。" }
       },
       {
         id: "systems-production",
-        label: "设计系统与生产化",
-        intro: "设计系统从组件库升级为人、代码、AI 都能读取的生产基础设施。"
+        label: { en: "Design systems and production", zh: "设计系统与生产化" },
+        intro: { en: "Design systems evolve from component libraries into production infrastructure readable by people, code, and AI.", zh: "设计系统从组件库升级为人、代码、AI 都能读取的生产基础设施。" }
       },
       {
         id: "craft-expression",
-        label: "Craft、动效与界面表达",
-        intro: "从 motion、shader、界面密度到数学可视化，强调设计 craft 的新工具和新标准。"
+        label: { en: "Craft, motion, and interface expression", zh: "Craft、动效与界面表达" },
+        intro: { en: "New tools and standards for craft across motion, shaders, information density, explanation, and interface detail.", zh: "从 motion、shader、界面密度到数学可视化，强调设计 craft 的新工具和新标准。" }
       },
       {
         id: "culture-identity",
-        label: "跨文化、身份与社区",
-        intro: "围绕身份、文化表达、社区关系、照护和低技术，提醒设计不只是效率。"
+        label: { en: "Culture, identity, and community", zh: "跨文化、身份与社区" },
+        intro: { en: "Identity, cultural expression, community, care, and low-tech thinking remind us design is not only efficiency.", zh: "围绕身份、文化表达、社区关系、照护和低技术，提醒设计不只是效率。" }
       },
       {
         id: "leadership-org",
-        label: "设计领导力与组织能力",
-        intro: "面向团队、企业与设计组织：如何在 AI 时代保持质量、信任和可持续协作。"
+        label: { en: "Design leadership and org capability", zh: "设计领导力与组织能力" },
+        intro: { en: "How teams and enterprises maintain quality, trust, and sustainable collaboration in the AI era.", zh: "面向团队、企业与设计组织：如何在 AI 时代保持质量、信任和可持续协作。" }
       }
     ];
 
@@ -1423,16 +1518,465 @@
       }
     ];
 
-    const categoryMap = new Map(categories.map(c => [c.id, c]));
-    const filters = [
-      { id: "all", label: "全部" },
-      ...categories.map(c => ({ id: c.id, label: c.label }))
-    ];
+    const englishSessions = {
+      "The rules are the art: creating with AI": {
+        summary: "Herndon's work reframes AI creation as the design of permissions, participation, and boundaries. The output matters, but the deeper design problem is who gets to define the rules of the model.",
+        insights: [
+          "Prompting is a thin layer; rights, consent, and governance are the real creative interface.",
+          "Designers need to specify how identity, style, and source material may be used, not only what should be generated.",
+          "AI craft shifts from making artifacts to directing systems of contribution, feedback, and control."
+        ]
+      },
+      "From kickoff to canvas: connecting Google Workspace and Figma": {
+        summary: "The useful pattern is not another AI sidebar. It is the reduction of context loss between meetings, documents, decisions, and design work.",
+        insights: [
+          "The bottleneck in many teams is context handoff, not drawing speed.",
+          "AI works best when embedded inside existing collaboration flows rather than parked beside them.",
+          "The design canvas becomes stronger when it can inherit the intent and decisions that happened before it."
+        ]
+      },
+      "Ready for the world": {
+        summary: "Tan shows Figma as a thinking environment for turning ambiguity into a shareable story. The lesson for designers is to treat visual systems as scaffolding for personal judgment, not only product delivery.",
+        insights: [
+          "Design tools can lower the cost of crossing from product work into publishing, education, and personal narrative.",
+          "A visual system can hold uncertainty long enough for an idea to become coherent.",
+          "The creative mess is not a defect; it is often the evidence that the concept is still becoming sharper."
+        ]
+      },
+      "Get animated with Figma Motion": {
+        summary: "Motion is presented as product language rather than decoration. Bringing timelines and reusable motion behavior into Figma makes motion easier to critique, systematize, and hand off.",
+        insights: [
+          "Motion communicates state, priority, and rhythm; it should be designed with the same discipline as layout and typography.",
+          "Reusable motion patterns are part of a design system, not a final polish pass.",
+          "Keeping motion semantics in the design environment reduces loss between design intent and implementation."
+        ]
+      },
+      "Welcome and opening remarks": {
+        summary: "The opening frames Config as a conversation about how design organizations work under AI pressure, not just a showcase of product updates.",
+        insights: [
+          "The center of gravity moves from tool adoption to organizational operating model.",
+          "Design leadership now needs fluency across product strategy, AI capability, culture, and team rituals.",
+          "A useful opening for reading the rest of the conference through quality, trust, and collaboration."
+        ]
+      },
+      "Trust as a through line": {
+        summary: "Across hospitality, finance, and Figma, trust appears as a continuous experience. It is built through service behavior, language, transparency, and restraint, not through one trust badge.",
+        insights: [
+          "Trust is cumulative: every interaction either deposits into it or withdraws from it.",
+          "AI personalization needs visible boundaries, accountable choices, and moments where the user can regain control.",
+          "High-risk categories should treat trust as a product metric, not a brand aspiration."
+        ]
+      },
+      "Beyond design systems: designing for robots and seniors": {
+        summary: "This talk pushes AI design out of the screen and into care environments. For designers, it is a reminder that the highest-risk experiences often sit in bodies, rooms, routines, and relationships.",
+        insights: [
+          "Edge cases are frequently the real world; designing for them reveals the assumptions hidden in mainstream UX.",
+          "AI interaction must account for space, safety, cognition, emotion, and caregiver workload.",
+          "Inclusive design needs evidence from the environment before it needs a polished component library."
+        ]
+      },
+      "Scaling taste, craft, and quality in the AI era": {
+        summary: "When generation becomes cheaper, quality does not happen automatically. The leadership task is to make taste discussable, transferable, and operational inside the team.",
+        insights: [
+          "AI increases output volume, which makes selection and critique more important than production speed.",
+          "Taste scales through principles, critique rituals, shared examples, and explicit standards.",
+          "Design leaders must define what is worth making before the team optimizes how fast it can make it."
+        ]
+      },
+      "How to build content systems for AI product workflows": {
+        summary: "AI turns copy into a distributed production surface. Content systems become the guardrails that keep tone, compliance, meaning, and product intent coherent across generated workflows.",
+        insights: [
+          "Every AI-enabled tool can become a content generator, so content design becomes infrastructure.",
+          "Voice, terminology, legal constraints, and review paths need to be encoded as reusable system inputs.",
+          "Consistency is created upstream by structured guidance, not downstream by manual cleanup."
+        ]
+      },
+      "From concept to confidence with Dscout AI": {
+        summary: "The value of faster prototyping depends on faster learning. Dscout's angle is useful because it ties AI ideation back to evidence and user exposure.",
+        insights: [
+          "More concepts do not equal more confidence; evidence has to scale with output speed.",
+          "AI can help teams put rough ideas in front of users earlier, when change is still cheap.",
+          "Design confidence comes from a visible learning trail, not from a larger pile of options."
+        ]
+      },
+      "Skill issue: how we built an OS for PMs at Figma": {
+        summary: "Figma's PM OS suggests a mature use of AI: remove coordination drag so people can spend more attention on product judgment.",
+        insights: [
+          "Internal AI tools reveal a company's actual work culture, not just its technology taste.",
+          "The best automation removes busywork while preserving human ownership of direction and tradeoffs.",
+          "Productizing internal workflows can become a durable organizational advantage."
+        ]
+      },
+      "Navigating the age of agentic computing": {
+        summary: "Agentic AI needs interaction models beyond chat boxes. The design opportunity is to shape roles, permissions, memory, intent, and recovery for AI that can act.",
+        insights: [
+          "An agent is not only an input field; it is a participant with scope, state, and consequences.",
+          "Designers need patterns for delegation, supervision, interruption, and accountability.",
+          "The next AI UX challenge is relationship design between human intent and machine action."
+        ]
+      },
+      "Trust, transparency, and flow: the UX of Gemini Enterprise": {
+        summary: "Enterprise AI becomes trustworthy when users can understand what is happening without being buried in explanations. Transparency must support flow, not compete with it.",
+        insights: [
+          "The hard problem is not showing AI capability; it is making status, responsibility, and next action legible.",
+          "Too much explanation can become another kind of friction.",
+          "Multi-agent systems should borrow interaction patterns from team collaboration, not only automation dashboards."
+        ]
+      },
+      "Figma deep dive: designing with the Figma agent": {
+        summary: "The Figma agent is most interesting as a canvas collaborator. Its quality depends on how much product, brand, and design-system context it can read and be taught.",
+        insights: [
+          "Agent quality is limited by context quality.",
+          "Connectors, teachable skills, and search turn generation into an ongoing working relationship.",
+          "Designers will need to learn how to instruct and train agents, not only request outputs."
+        ]
+      },
+      "Hacking AI for creative operations at scale": {
+        summary: "The deeper AI opportunity in creative teams is operational: briefing, routing, rules, approvals, and knowledge structures that make creative output repeatable without flattening it.",
+        insights: [
+          "Creative leverage often sits upstream of asset generation.",
+          "Scaling creativity requires workflow design, not only model access.",
+          "Future creative teams will treat process architecture as part of the craft."
+        ]
+      },
+      "Generative plugins: building plugins has never been easier": {
+        summary: "Generative plugins turn repeated design behavior into shareable workflow objects. This changes plugins from engineering side projects into a way teams package their own standards.",
+        insights: [
+          "The unit of automation becomes a describable workflow, not only a coded feature.",
+          "Teams can encode local rules and quality bars into tools that live inside Figma.",
+          "More design artifacts will sit between design and engineering: partly interface, partly process, partly code."
+        ]
+      },
+      "The most important component: community": {
+        summary: "The community argument is sharper in the AI era: when production becomes abundant, provenance, shared context, and human connection become more valuable.",
+        insights: [
+          "Community is not a marketing layer; it is creative context.",
+          "As average output becomes automated, relationships and point of view become stronger differentiators.",
+          "Design platforms should support attribution, remix culture, and visible creative lineage."
+        ]
+      },
+      "Designing OpenAI’s products: Rethinking design in the age of AI": {
+        summary: "Designing large-scale AI products means designing for changing capabilities, uncertain use cases, and safety expectations while keeping the experience understandable for everyday users.",
+        insights: [
+          "The object being designed keeps changing as the model changes, so design process needs to stay adaptive.",
+          "AI UX must balance capability expression with restraint and safety boundaries.",
+          "Designers translate fast-moving technical behavior into everyday mental models."
+        ]
+      },
+      "How structured thinking gives your AI superpowers": {
+        summary: "The best AI workflows start before the prompt. Structured briefs, issues, docs, and trackers make design reasoning visible enough for AI to help with it.",
+        insights: [
+          "AI output quality depends on the structure of upstream information.",
+          "Documented reasoning lets AI become a continuous partner instead of a one-off generator.",
+          "Structured thinking becomes a core design skill because it turns context into reusable leverage."
+        ]
+      },
+      "Shaders in Figma: create the effects and fills you've always wanted": {
+        summary: "Shaders bring programmable visual surfaces closer to the designer. The design value is not novelty, but making dynamic brand expression editable and reusable.",
+        insights: [
+          "Advanced visual effects move from engineering specialty toward design material.",
+          "Agents can lower technical barriers, but aesthetic judgment remains human work.",
+          "Editable dynamic surfaces expand what a brand system can contain."
+        ]
+      },
+      "Build like it's 2030. Listen like you mean it.": {
+        summary: "The talk argues that faster building increases the responsibility to listen. When anyone can generate, the designer's strategic role is to define quality and connect work back to people.",
+        insights: [
+          "Democratized research does not remove researchers; democratized design does not remove designers.",
+          "Teams need a stronger definition of good, not just more ways to produce.",
+          "Listening has to be part of the build rhythm, not a late-stage correction."
+        ]
+      },
+      "The learning curve: turning real-world motion into design": {
+        summary: "Capture-to-curve workflows suggest a future where motion design starts from embodied reference, then becomes editable system material.",
+        insights: [
+          "Real-world movement can become a high-quality input for digital motion.",
+          "Better motion tools should help designers focus on timing and feel, not graph-editor friction.",
+          "Motion can be captured, cleaned, reused, and critiqued like any other design asset."
+        ]
+      },
+      "What it feels like to build in 2026": {
+        summary: "This panel is useful because it names the emotional texture of AI-accelerated work: hybrid roles, speed, fatigue, identity, and the search for meaningful differentiation.",
+        insights: [
+          "AI changes how designers understand their own value, not only how they execute tasks.",
+          "When production gets faster, differentiation depends more on taste, framing, and selection.",
+          "Teams need to design for sustainable pace, not only higher throughput."
+        ]
+      },
+      "Designing math": {
+        summary: "Sanderson treats explanation as design. The takeaway is that abstraction becomes accessible when motion, structure, and sequencing help people form a mental model.",
+        insights: [
+          "Explanation design shapes whether people can build a relationship with complexity.",
+          "Animation and visual structure can make abstract systems feel inspectable.",
+          "Product designers can learn from education design how to lower the entry cost of difficult ideas."
+        ]
+      },
+      "Patterns for restarting the world": {
+        summary: "Live-coded music reframes text interfaces as expressive, flexible creative environments. The broader design point is that powerful tools do not always need to hide complexity.",
+        insights: [
+          "Text can be a high-freedom creative interface, not a nostalgic artifact.",
+          "Creative tools should let people shape the system, not only consume preset features.",
+          "Some of HCI's future may come from artistic practice and software maintenance culture."
+        ]
+      },
+      "Designing in the age of the 10x engineer": {
+        summary: "As building gets easier, the design role moves toward problem framing, system behavior, and intent. Static screens become less sufficient for describing dynamic products.",
+        insights: [
+          "Speed raises the value of asking the right question before generating the answer.",
+          "Intent-driven experiences require designers to reason about systems, states, and adaptation.",
+          "The design-engineering boundary continues to blur around generated behavior."
+        ]
+      },
+      "The invisible mechanisms in your interfaces": {
+        summary: "Mutter's talk is a reminder that craft often lives in tiny rules users never name. Naming these mechanisms is how teams make quality repeatable.",
+        insights: [
+          "Advanced interaction craft often hides in edge states and invisible behaviors.",
+          "A team improves quality when it gives names to the mechanisms it wants to control.",
+          "Designers should collect interaction mechanisms, not only visual patterns."
+        ]
+      },
+      "The world of street art and care-filled design": {
+        summary: "Street art makes design public, situated, and accountable to place. It widens the design lens from screens to culture, bodies, access, and care.",
+        insights: [
+          "Design happens in streets, communities, and physical practice, not only in digital canvases.",
+          "Care-filled design respects medium, place, risk, and participant agency.",
+          "Cross-cultural design is specific attention to context, not a generic inclusion label."
+        ]
+      },
+      "Building real-time user insights into your design workflow": {
+        summary: "Real-time insight tools are valuable when they change the timing of learning. The goal is to help teams calibrate while design choices are still open.",
+        insights: [
+          "Teams should not wait until after shipping to learn what users understood.",
+          "Research becomes more actionable when it is close to the canvas and the decision moment.",
+          "In AI-accelerated work, evidence needs to be as accessible as generation."
+        ]
+      },
+      "Dense by design": {
+        summary: "Density is not clutter; it is value per unit of time and space. The real craft is information architecture, hierarchy, and matching density to user expertise.",
+        insights: [
+          "Dense interfaces succeed when every element earns its place in the user's workflow.",
+          "High-density UX needs stronger hierarchy, not more visual noise.",
+          "Different user skill levels require different density strategies."
+        ]
+      },
+      "Building AI products at enterprise scale": {
+        summary: "Enterprise AI trust is shaped by infrastructure, security, permissions, and workflow fit as much as interface polish. Design has to work across the system boundary.",
+        insights: [
+          "Enterprise AI UX is inseparable from security, governance, and reliability.",
+          "Trust comes from consistent system behavior, not AI marketing language.",
+          "Design becomes strategic when it connects product experience to operational constraints."
+        ]
+      },
+      "Usernames on Instagram: how a craft fix became an identity crisis": {
+        summary: "A username field can carry identity, culture, safety, and policy. Content design matters because language is part of how systems let people be seen.",
+        insights: [
+          "Small interface labels can hold large social meaning.",
+          "Naming is not a technical detail; it affects recognition, belonging, and control.",
+          "Good UX connects language, policy, data model, and interface behavior."
+        ]
+      },
+      "AI will upend your process—for the better": {
+        summary: "The useful AI conversation is end-to-end process redesign. Local speedups matter less than changing how discovery, delivery, and validation connect.",
+        insights: [
+          "AI creates leverage when it reshapes the whole value flow, not only one task.",
+          "Handoffs between design, product, and engineering are design problems in their own right.",
+          "Faster delivery still needs disciplined discovery and evidence of value."
+        ]
+      },
+      "The future is low-tech: lessons from the early 2000s": {
+        summary: "Low-tech is framed as a design choice, not a lack of ambition. It asks designers to care about attention, nervous-system load, slowness, and emotional texture.",
+        insights: [
+          "The future may need calmer technology, not only smarter technology.",
+          "Low-tech patterns can protect attention and make systems feel more humane.",
+          "Emotional load should be treated as an experience metric."
+        ]
+      },
+      "Inside the Weave workflow": {
+        summary: "Weave is most interesting as an iterative creative system: branching, sequencing, chaining, editing, failing, and recovering. It makes AI work visible as process, not magic.",
+        insights: [
+          "AI creation is not a single generation event; it is a chain of judgment calls.",
+          "Errors and recovery paths should be designed into creative tools.",
+          "The skill shifts toward orchestrating models, references, constraints, and edits."
+        ]
+      },
+      "The canvas is not dead": {
+        summary: "The canvas remains valuable because complex products need spatial reasoning, persistent context, and visible tradeoffs. Prompting cannot replace the work of arranging meaning.",
+        insights: [
+          "Prompts are weak at holding complex product relationships over time.",
+          "Designers use space to organize states, constraints, alternatives, and decisions.",
+          "The stronger AI generation becomes, the more deliberately designers must curate context."
+        ]
+      },
+      "Everyone's still eating: building Notion's design system": {
+        summary: "Notion's metaphor captures the reality of systems work: teams must improve the table while people are still using it. Adoption is as important as architecture.",
+        insights: [
+          "Design system migration is continuous work inside live product pressure.",
+          "Systems are socio-technical: components, code, habits, incentives, and support all matter.",
+          "A good system serves today's business while creating room for tomorrow's quality."
+        ]
+      },
+      "Preparing Rocket for the AI era": {
+        summary: "Rocket's case makes AI readiness concrete: components, code connections, education, governance, and shared workflows need to be prepared before AI can scale responsibly.",
+        insights: [
+          "AI-ready means callable systems, not just enabled tools.",
+          "Design systems become the context base that agents use to understand product intent.",
+          "Large organizations need training and boundaries as much as new AI features."
+        ]
+      },
+      "Designing with confidence in an AI-powered world": {
+        summary: "AI increases the number of possible directions, which can make decisions harder. Confidence comes from evidence, interpretation, and a defensible learning process.",
+        insights: [
+          "Unlimited options can create decision debt.",
+          "Research evidence matters more when speed can amplify the wrong choice.",
+          "Defensible design decisions need a clear connection between user signal and product direction."
+        ]
+      },
+      "Designed to be read: making a system AI can actually use": {
+        summary: "Meta's case shows that AI exposes the semantic quality of a design system. If the system is poorly named, documented, or structured, the AI output will show it.",
+        insights: [
+          "Design systems now need machine readability as well as human usability.",
+          "Naming, documentation, component boundaries, and hierarchy directly affect generated quality.",
+          "When AI fails to use a system well, it often reveals gaps the team already needed to fix."
+        ]
+      },
+      "Getting real output from Figma Make": {
+        summary: "Figma Make rewards preparation. Good output comes from guidelines, file structure, component wiring, templates, presets, and prompts that carry real product context.",
+        insights: [
+          "Make quality is designed upstream; it is not luck.",
+          "Files, components, and guidelines are part of the prompt surface.",
+          "AI output is a diagnostic tool for what your system has failed to specify."
+        ]
+      },
+      "Design context for agentic workflows": {
+        summary: "Agentic workflows need context before action. The designer's job is to organize platform information into a shared language that helps the agent act with intent.",
+        insights: [
+          "The start of an agent workflow is a design moment, not a technical setup step.",
+          "Clear context lets AI behave more intentionally and less randomly.",
+          "Designers need to structure information so humans and agents can reason from the same source."
+        ]
+      }
+    };
 
+    const priorityLabels = {
+      "必看": "Must watch",
+      "工作流": "Workflow",
+      "设计叙事": "Design narrative",
+      "工具更新": "Tool update",
+      "开场": "Opening",
+      "信任": "Trust",
+      "包容设计": "Inclusive design",
+      "质量标准": "Quality standards",
+      "内容系统": "Content systems",
+      "研究": "Research",
+      "内部工具": "Internal tools",
+      "Agent 哲学": "Agent philosophy",
+      "企业 AI": "Enterprise AI",
+      "Figma Agent": "Figma Agent",
+      "规模化运营": "Creative ops",
+      "插件": "Plugins",
+      "社区": "Community",
+      "OpenAI": "OpenAI",
+      "思维方式": "Thinking tools",
+      "视觉表达": "Visual expression",
+      "研究未来": "Research future",
+      "动效": "Motion",
+      "圆桌": "Panel",
+      "解释设计": "Explanation design",
+      "可编程创作": "Creative coding",
+      "角色演化": "Role evolution",
+      "UX 细节": "UX craft",
+      "文化表达": "Cultural expression",
+      "实时洞察": "Real-time insights",
+      "界面密度": "Interface density",
+      "身份 UX": "Identity UX",
+      "流程重构": "Process redesign",
+      "低技术": "Low-tech",
+      "Weave": "Weave",
+      "画布哲学": "Canvas philosophy",
+      "设计系统": "Design systems",
+      "AI-ready 系统": "AI-ready systems",
+      "决策信心": "Decision confidence",
+      "AI 可读性": "AI readability",
+      "Make": "Make",
+      "Agent 上下文": "Agent context"
+    };
+
+    const categoryMap = new Map(categories.map(c => [c.id, c]));
+    const supportedLangs = ["en", "zh"];
     let activeFilter = "all";
     let query = "";
+    let currentLang = supportedLangs.includes(localStorage.getItem("configRecapLang"))
+      ? localStorage.getItem("configRecapLang")
+      : "en";
+
+    function localized(value) {
+      if (!value || typeof value !== "object") return value;
+      return value[currentLang] || value.en || value.zh || "";
+    }
+
+    function localizedSummary(session) {
+      if (currentLang === "en") return englishSessions[session.title]?.summary || session.summary;
+      return session.summary;
+    }
+
+    function localizedInsights(session) {
+      if (currentLang === "en") return englishSessions[session.title]?.insights || session.insights;
+      return session.insights;
+    }
+
+    function localizedPriority(session) {
+      if (currentLang === "en") return priorityLabels[session.priority] || session.priority;
+      return session.priority;
+    }
+
+    function renderMultiline(text) {
+      return text.split("\n").join("<br>");
+    }
+
+    function setText(id, text) {
+      document.getElementById(id).textContent = text;
+    }
+
+    function renderStaticCopy() {
+      const copy = ui[currentLang];
+      document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
+      document.body.dataset.lang = currentLang;
+      document.title = currentLang === "zh" ? "Config 2026 · 设计师主题复盘" : "Config 2026 · Designer Recap";
+      document.querySelectorAll("[data-i18n]").forEach(node => {
+        node.textContent = copy[node.dataset.i18n];
+      });
+      document.querySelectorAll("[data-lang-button]").forEach(button => {
+        button.setAttribute("aria-pressed", String(button.dataset.langButton === currentLang));
+      });
+      document.getElementById("hero-title").innerHTML = copy.heroTitle;
+      setText("hero-copy", copy.heroCopy);
+      copy.stats.forEach((item, index) => setText(`stat-${index + 1}`, item));
+      document.getElementById("brief-title").innerHTML = renderMultiline(copy.briefTitle);
+      setText("brief-intro", copy.briefIntro);
+      copy.briefs.forEach((brief, index) => {
+        setText(`brief-${index + 1}-title`, brief[0]);
+        setText(`brief-${index + 1}-body`, brief[1]);
+      });
+      document.getElementById("sessions-title").innerHTML = renderMultiline(copy.sessionsTitle);
+      setText("sessions-intro", copy.sessionsIntro);
+      document.getElementById("search").placeholder = copy.searchPlaceholder;
+      setText("sort-note", copy.sortNote);
+      setText("empty", copy.empty);
+      setText("note", copy.note);
+      setText("footer-source", copy.footerSource);
+      setText("footer-note", copy.footerNote);
+    }
+
+    function getFilters() {
+      return [
+        { id: "all", label: ui[currentLang].all },
+        ...categories.map(category => ({ id: category.id, label: localized(category.label) }))
+      ];
+    }
 
     function textForSearch(session) {
+      const english = englishSessions[session.title] || {};
+      const category = categoryMap.get(session.category);
       return [
         session.title,
         session.session,
@@ -1440,8 +1984,12 @@
         session.role,
         session.theme,
         session.summary,
+        english.summary,
+        localized(category?.label),
+        localized(category?.intro),
         session.tags.join(" "),
-        session.insights.join(" ")
+        session.insights.join(" "),
+        english.insights?.join(" ")
       ].join(" ").toLowerCase();
     }
 
@@ -1456,7 +2004,7 @@
 
     function renderFilters() {
       const root = document.getElementById("filters");
-      root.innerHTML = filters.map(filter => `
+      root.innerHTML = getFilters().map(filter => `
         <button class="filter-button" data-filter="${filter.id}" aria-pressed="${filter.id === activeFilter}">
           ${filter.label}
         </button>
@@ -1487,29 +2035,31 @@
     }
 
     function card(session) {
+      const copy = ui[currentLang];
       const thumbnail = youtubeThumbnail(session.link);
+      const theme = currentLang === "zh" ? `<p class="theme-line">${session.theme}</p>` : "";
       return `
         <article class="session-card">
-          <a class="thumb-link" href="${session.link}" target="_blank" rel="noreferrer" aria-label="观看 ${session.title} 官方录屏">
+          <a class="thumb-link" href="${session.link}" target="_blank" rel="noreferrer" aria-label="${copy.watch.replace(" ↗", "")}: ${session.title}">
             <img class="thumb" src="${thumbnail}" alt="${session.title} official recording thumbnail" loading="lazy">
           </a>
           <div class="card-top">
             <span class="pill">${session.session}</span>
-            <span class="pill score">${session.priority}</span>
+            <span class="pill score">${localizedPriority(session)}</span>
           </div>
-          <p class="theme-line">${session.theme}</p>
+          ${theme}
           <h3 class="card-title">${session.title}</h3>
           <p class="speaker"><strong>${session.speaker}</strong><br>${session.role}</p>
 
-          <p class="summary">${session.summary}</p>
+          <p class="summary">${localizedSummary(session)}</p>
 
-          <p class="label">Key insights</p>
+          <p class="label">${copy.label}</p>
           <ul class="insights">
-            ${session.insights.map(item => `<li>${item}</li>`).join("")}
+            ${localizedInsights(session).map(item => `<li>${item}</li>`).join("")}
           </ul>
 
           <div class="card-actions">
-            <a class="watch-link" href="${session.link}" target="_blank" rel="noreferrer">观看官方录屏 ↗</a>
+            <a class="watch-link" href="${session.link}" target="_blank" rel="noreferrer">${copy.watch}</a>
             <div class="tags">${session.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}</div>
           </div>
         </article>
@@ -1525,10 +2075,10 @@
           <section class="topic-section" id="${category.id}">
             <div class="topic-head">
               <div>
-                <h3 class="topic-title">${category.label}</h3>
-                <p class="topic-summary">${category.intro}</p>
+                <h3 class="topic-title">${localized(category.label)}</h3>
+                <p class="topic-summary">${localized(category.intro)}</p>
               </div>
-              <span class="topic-count">${items.length} 个 speaking 内容</span>
+              <span class="topic-count">${ui[currentLang].topicCount(items.length)}</span>
             </div>
             <div class="session-grid">
               ${items.map(card).join("")}
@@ -1539,17 +2089,26 @@
     }
 
     function render() {
+      renderStaticCopy();
       renderFilters();
       const visible = getVisibleSessions();
       renderTopics(visible);
       document.getElementById("count").textContent =
-        `显示 ${visible.length} / ${sessions.length} 个 speaking 内容；覆盖 ${new Set(visible.map(s => s.link)).size} 个官方录屏。`;
+        ui[currentLang].count(visible.length, sessions.length, new Set(visible.map(s => s.link)).size);
       document.getElementById("empty").style.display = visible.length ? "none" : "block";
     }
 
     document.getElementById("search").addEventListener("input", event => {
       query = event.target.value;
       render();
+    });
+
+    document.querySelectorAll("[data-lang-button]").forEach(button => {
+      button.addEventListener("click", () => {
+        currentLang = button.dataset.langButton;
+        localStorage.setItem("configRecapLang", currentLang);
+        render();
+      });
     });
 
     render();
