@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>Config 2026 · Designer's Session Map</title>
+  <title>Config 2026 · Designer Recap</title>
   <style>
     :root {
       --ink: #161616;
@@ -144,13 +144,14 @@
       margin: 0 0 20px;
       font-size: 88px;
       line-height: .9;
-      letter-spacing: -.068em;
+      letter-spacing: -.052em;
       text-wrap: balance;
     }
 
     h1 span {
       display: block;
       color: var(--violet);
+      white-space: nowrap;
     }
 
     .hero-copy {
@@ -268,25 +269,6 @@
       backdrop-filter: blur(14px);
     }
 
-    .toolbar::after {
-      content: "→";
-      position: absolute;
-      right: 18px;
-      top: 50%;
-      display: grid;
-      place-items: center;
-      width: 28px;
-      height: 28px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      background: rgba(255, 253, 247, .96);
-      color: var(--muted);
-      font-weight: 900;
-      transform: translateY(-50%);
-      pointer-events: none;
-      box-shadow: -10px 0 18px rgba(255, 253, 247, .94);
-    }
-
     .search {
       width: 100%;
       min-width: 0;
@@ -310,11 +292,12 @@
       gap: 8px;
       min-width: 0;
       overflow-x: auto;
-      padding: 1px 42px 1px 0;
+      padding: 1px 0;
       scroll-snap-type: x proximity;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
-      mask-image: linear-gradient(90deg, #000 calc(100% - 42px), transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
     }
 
     .filters::-webkit-scrollbar {
@@ -591,17 +574,6 @@
       background: rgba(255,255,255,.5);
     }
 
-    .note {
-      margin-top: 30px;
-      padding: 18px 20px;
-      border-left: 5px solid var(--orange);
-      border-radius: 12px;
-      background: #fff3ec;
-      color: #4e453d;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
     footer {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -636,7 +608,6 @@
       .section { margin-top: 50px; }
       .section-head, .meta-line, .topic-head, footer { grid-template-columns: 1fr; flex-direction: column; align-items: flex-start; }
       .toolbar { grid-template-columns: 1fr; position: static; }
-      .toolbar::after { top: auto; bottom: 22px; transform: none; }
       .filters { justify-content: flex-start; }
       .filter-button { text-align: left; }
       .session-grid { grid-template-columns: 1fr; }
@@ -651,7 +622,7 @@
     <header class="topbar">
       <div class="brand">
         <span class="brand-mark">C</span>
-        Config 2026 · Designer's Session Map
+        Config 2026 · Designer Recap
       </div>
       <div class="top-links">
         <a href="https://config.figma.com/san-francisco/agenda/" target="_blank" rel="noreferrer" data-i18n="officialAgenda">Official agenda ↗</a>
@@ -665,7 +636,7 @@
 
     <section class="hero">
       <div>
-        <h1 id="hero-title">Config <span>Designer's Session Map</span></h1>
+        <h1 id="hero-title">Config <span>Designer's Map</span></h1>
         <p class="hero-copy" id="hero-copy"></p>
       </div>
       <aside class="hero-aside">
@@ -727,7 +698,6 @@
       <div id="topic-root"></div>
       <div class="empty" id="empty"></div>
 
-      <div class="note" id="note"></div>
     </section>
 
     <footer>
@@ -741,7 +711,7 @@
       en: {
         officialAgenda: "Official agenda ↗",
         figmaYoutube: "Figma YouTube ↗",
-        heroTitle: "Config <span>Designer's Session Map</span>",
+        heroTitle: "Config <span>Designer's Map</span>",
         heroCopy: "A topic-led recap for global design colleagues: the published Config 2026 recordings are reorganized into practical design paths, with sharper takeaways on AI collaboration, systems, trust, craft, and design leadership.",
         stats: [
           "recorded sessions currently available from the official agenda",
@@ -762,13 +732,12 @@
         all: "All",
         sortNote: "Sorted by design theme first, then by relevance inside each theme rather than livestream time.",
         empty: "No matching sessions. Try another keyword or topic.",
-        note: "Note: This page includes only sessions that currently have official YouTube recording links in the Config agenda. Sessions still marked as recording coming soon are excluded to avoid dead ends.",
-        footerSource: "Source: Config 2026 San Francisco official agenda and the Figma YouTube recordings linked from it. Generated on 2026-06-29; bilingual refresh on 2026-07-03.",
-        footerNote: "Made for design review, not calendar planning.",
+        footerSource: "Source: Config 2026 San Francisco official agenda and the Figma YouTube recordings linked from it. Generated on 2026-06-29; bilingual refresh on 2026-07-03. Note: this page includes only sessions that currently have official YouTube recording links.",
+        footerNote: "Designed to help designers find the right Config sessions faster.",
         count: (visible, total, recordings) => `Showing ${visible} / ${total} speaking moments across ${recordings} official recordings.`,
         topicCount: count => `${count} speaking moments`,
         label: "Design takeaways",
-        watch: "Watch official recording ↗"
+        watch: "Watch video ↗"
       },
       zh: {
         officialAgenda: "官方 Agenda ↗",
@@ -794,9 +763,8 @@
         all: "全部",
         sortNote: "排序方式：主题优先；同一主题内按内容关联度排列，而不是按直播时间。",
         empty: "没有匹配的 session。换一个关键词或主题试试。",
-        note: "说明：本页只收录官方 Agenda 当前提供 YouTube 录屏链接的 speaking 内容。仍显示 “Recording coming soon” 或未提供录屏链接的场次没有被纳入卡片，避免误导。摘要与 key insights 基于官方 session 描述、讲者信息和录屏元数据进行中文归纳。",
-        footerSource: "数据来源：Config 2026 San Francisco 官方 Agenda 与其记录的 Figma 官方 YouTube 录屏链接。本页生成日期：2026-06-29；双语优化日期：2026-07-03。",
-        footerNote: "Made for design review, not calendar planning.",
+        footerSource: "数据来源：Config 2026 San Francisco 官方 Agenda 与其记录的 Figma 官方 YouTube 录屏链接。本页生成日期：2026-06-29；双语优化日期：2026-07-03。说明：本页只收录官方 Agenda 当前提供 YouTube 录屏链接的 speaking 内容。仍显示 “Recording coming soon” 或未提供录屏链接的场次没有被纳入卡片，避免误导。",
+        footerNote: "Designed to help designers find the right Config sessions faster.",
         count: (visible, total, recordings) => `显示 ${visible} / ${total} 个 speaking 内容；覆盖 ${recordings} 个官方录屏。`,
         topicCount: count => `${count} 个 speaking 内容`,
         label: "Key insights",
@@ -1982,7 +1950,7 @@
       const copy = ui[currentLang];
       document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
       document.body.dataset.lang = currentLang;
-      document.title = currentLang === "zh" ? "Config 2026 · 设计师主题复盘" : "Config 2026 · Designer's Session Map";
+      document.title = currentLang === "zh" ? "Config 2026 · 设计师主题复盘" : "Config 2026 · Designer Recap";
       document.querySelectorAll("[data-i18n]").forEach(node => {
         node.textContent = copy[node.dataset.i18n];
       });
@@ -2003,7 +1971,6 @@
       document.getElementById("search").placeholder = copy.searchPlaceholder;
       setText("sort-note", copy.sortNote);
       setText("empty", copy.empty);
-      setText("note", copy.note);
       setText("footer-source", copy.footerSource);
       setText("footer-note", copy.footerNote);
     }
