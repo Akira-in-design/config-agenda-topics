@@ -285,6 +285,41 @@
       box-shadow: 0 0 0 3px rgba(216, 255, 82, .75);
     }
 
+    .filter-shell {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) 34px;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .filter-nav {
+      appearance: none;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: white;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1;
+      transition: opacity .16s ease, transform .16s ease, border-color .16s ease;
+    }
+
+    .filter-nav:hover:not(:disabled) {
+      border-color: var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .filter-nav:disabled {
+      cursor: default;
+      opacity: .28;
+    }
+
     .filters {
       display: flex;
       flex-wrap: nowrap;
@@ -621,6 +656,8 @@
       .section { margin-top: 50px; }
       .section-head, .meta-line, .topic-head, footer { grid-template-columns: 1fr; flex-direction: column; align-items: flex-start; }
       .toolbar { grid-template-columns: 1fr; position: static; }
+      .filter-shell { grid-template-columns: 30px minmax(0, 1fr) 30px; }
+      .filter-nav { width: 30px; height: 30px; }
       .filters { justify-content: flex-start; }
       .filter-button { text-align: left; }
       .session-grid { grid-template-columns: 1fr; }
@@ -701,7 +738,11 @@
 
       <div class="toolbar" aria-label="Session filters">
         <input class="search" id="search" type="search">
-        <div class="filters" id="filters"></div>
+        <div class="filter-shell">
+          <button class="filter-nav" type="button" data-filter-nav="left" aria-label="Scroll filters left">‹</button>
+          <div class="filters" id="filters"></div>
+          <button class="filter-nav" type="button" data-filter-nav="right" aria-label="Scroll filters right">›</button>
+        </div>
       </div>
       <div class="meta-line">
         <span id="count"></span>
@@ -1928,6 +1969,9 @@
     let activeFilter = "all";
     let query = "";
     let scrollSyncQueued = false;
+    let lastSyncedTopic = null;
+    let pendingFilterScrollBehavior = "auto";
+    let filtersScrollListenerBound = false;
     let currentLang = supportedLangs.includes(localStorage.getItem("configRecapLang"))
       ? localStorage.getItem("configRecapLang")
       : "en";
@@ -2034,17 +2078,37 @@
       root.querySelectorAll("button").forEach(button => {
         button.addEventListener("click", () => {
           activeFilter = button.dataset.filter;
+          lastSyncedTopic = activeFilter === "all" ? null : activeFilter;
+          pendingFilterScrollBehavior = "smooth";
           render();
         });
       });
-      root.addEventListener("scroll", updateFilterEdgeState, { passive: true });
+      if (!filtersScrollListenerBound) {
+        root.addEventListener("scroll", updateFilterEdgeState, { passive: true });
+        document.querySelectorAll("[data-filter-nav]").forEach(button => {
+          button.addEventListener("click", () => scrollFiltersBy(button.dataset.filterNav));
+        });
+        filtersScrollListenerBound = true;
+      }
     }
 
     function updateFilterEdgeState() {
       const root = document.getElementById("filters");
       const maxScroll = Math.max(0, root.scrollWidth - root.clientWidth);
-      root.classList.toggle("can-scroll-left", root.scrollLeft > 2);
-      root.classList.toggle("can-scroll-right", root.scrollLeft < maxScroll - 2);
+      const canScrollLeft = root.scrollLeft > 2;
+      const canScrollRight = root.scrollLeft < maxScroll - 2;
+      root.classList.toggle("can-scroll-left", canScrollLeft);
+      root.classList.toggle("can-scroll-right", canScrollRight);
+      document.querySelector('[data-filter-nav="left"]').disabled = !canScrollLeft;
+      document.querySelector('[data-filter-nav="right"]').disabled = !canScrollRight;
+    }
+
+    function scrollFiltersBy(direction) {
+      const root = document.getElementById("filters");
+      const distance = Math.max(180, root.clientWidth * .72);
+      const left = direction === "left" ? -distance : distance;
+      root.scrollBy({ left, behavior: "smooth" });
+      window.setTimeout(updateFilterEdgeState, 260);
     }
 
     function scrollFilterTo(filterId, behavior = "smooth") {
@@ -2054,7 +2118,12 @@
       const maxScroll = Math.max(0, root.scrollWidth - root.clientWidth);
       const categoryIndex = categories.findIndex(category => category.id === filterId);
       const shouldPinRight = categoryIndex >= categories.length - 2;
-      const target = shouldPinRight ? maxScroll : Math.min(button.offsetLeft, maxScroll);
+      const rawTarget = button.getBoundingClientRect().left - root.getBoundingClientRect().left + root.scrollLeft;
+      const target = shouldPinRight ? maxScroll : Math.min(Math.max(0, rawTarget), maxScroll);
+      if (Math.abs(root.scrollLeft - target) < 3) {
+        updateFilterEdgeState();
+        return;
+      }
       root.scrollTo({ left: target, behavior });
       window.setTimeout(updateFilterEdgeState, behavior === "smooth" ? 260 : 0);
     }
@@ -2076,7 +2145,10 @@
       scrollSyncQueued = false;
       if (activeFilter !== "all") return;
       const currentTopic = currentTopicFromViewport();
-      if (currentTopic) scrollFilterTo(currentTopic, "auto");
+      const targetTopic = currentTopic || "all";
+      if (targetTopic === lastSyncedTopic) return;
+      lastSyncedTopic = targetTopic;
+      scrollFilterTo(targetTopic, "smooth");
     }
 
     function queueFilterScrollSync() {
@@ -2165,10 +2237,13 @@
         ui[currentLang].count(visible.length, sessions.length, new Set(visible.map(s => s.link)).size);
       document.getElementById("empty").style.display = visible.length ? "none" : "block";
       window.requestAnimationFrame(() => {
+        const behavior = pendingFilterScrollBehavior;
+        pendingFilterScrollBehavior = "auto";
         if (activeFilter === "all") {
-          scrollFilterTo(currentTopicFromViewport() || "all", "auto");
+          lastSyncedTopic = null;
+          scrollFilterTo("all", behavior);
         } else {
-          scrollFilterTo(activeFilter, "auto");
+          scrollFilterTo(activeFilter, behavior);
         }
         updateFilterEdgeState();
       });
